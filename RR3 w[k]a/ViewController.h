@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SystemConfiguration/SCNetworkReachability.h>
+#import "JsonDataGetter.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 
 @end

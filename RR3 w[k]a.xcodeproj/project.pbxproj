@@ -15,6 +15,7 @@
 		A79F03311BEE72A1001F0C90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79F032F1BEE72A1001F0C90 /* LaunchScreen.storyboard */; };
 		A79F033C1BEE72A1001F0C90 /* RR3_w_k_aTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F033B1BEE72A1001F0C90 /* RR3_w_k_aTests.m */; };
 		A79F03471BEE72A1001F0C90 /* RR3_w_k_aUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03461BEE72A1001F0C90 /* RR3_w_k_aUITests.m */; };
+		A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		A79F03421BEE72A1001F0C90 /* RR3 w[k]aUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RR3 w[k]aUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79F03461BEE72A1001F0C90 /* RR3_w_k_aUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RR3_w_k_aUITests.m; sourceTree = "<group>"; };
 		A79F03481BEE72A2001F0C90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataGetter.h; sourceTree = "<group>"; };
+		A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataGetter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				A79F03251BEE72A1001F0C90 /* AppDelegate.m */,
 				A79F03271BEE72A1001F0C90 /* ViewController.h */,
 				A79F03281BEE72A1001F0C90 /* ViewController.m */,
+				A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */,
+				A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */,
 				A79F032A1BEE72A1001F0C90 /* Main.storyboard */,
 				A79F032D1BEE72A1001F0C90 /* Assets.xcassets */,
 				A79F032F1BEE72A1001F0C90 /* LaunchScreen.storyboard */,
@@ -275,6 +280,7 @@
 			files = (
 				A79F03291BEE72A1001F0C90 /* ViewController.m in Sources */,
 				A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */,
+				A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */,
 				A79F03231BEE72A1001F0C90 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
