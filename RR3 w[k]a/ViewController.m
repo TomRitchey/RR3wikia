@@ -11,23 +11,42 @@
 @interface ViewController ()
 {
         JsonDataGetter *characters;
-    
-        NSArray *tableData;
-    
 }
+@property NSMutableArray *thumbnails;
+@property NSMutableArray *tableData;
+    
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSOperationQueue *loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
+
+    _thumbnails = [[NSMutableArray alloc]init];
     characters = [[JsonDataGetter alloc] initWithCategory:@"0-10_PR_Cars" withLimit:20];
     [characters downloadJsonData];
     while (![characters getTopTitles]) {
         usleep(50000);
     }
     //NSLog(@"%@",[characters getTopTitles]);
-    tableData = [characters getTopTitles];
+    _tableData = [characters getTopTitles];
+    for (int i = 0; i < characters.topTitles.count; i++) {
+        [_thumbnails addObject:[self genereteBlankImage]];
+        __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+            UIImage *image = [self downloadImageWithUrl:[[characters getTopThumbnails]objectAtIndex:i]];
+            if(image!=nil && ![downloadImageOperation isCancelled]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_thumbnails replaceObjectAtIndex:i withObject:image];
+                    [self.detailTableView reloadData];
+                });
+            }
+        }];
+        [loadingThumbnailsQueue addOperation:downloadImageOperation];
+    }
+    [self.detailTableView reloadData];
     
 }
 
@@ -38,7 +57,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [tableData count];
+    return [_tableData count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -50,9 +69,31 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
-    
-    cell.textLabel.text = [tableData objectAtIndex:indexPath.row];
+    cell.imageView.image = [_thumbnails objectAtIndex:indexPath.row];
+    cell.textLabel.text = [_tableData objectAtIndex:indexPath.row];
     return cell;
+}
+
+-(UIImage *)downloadImageWithUrl:(NSString *)url{
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    UIImage *tempImage = [UIImage imageWithData:imageData];
+    return tempImage;
+}
+
+-(UIImage *)genereteBlankImage {
+    
+    CGSize size = CGSizeMake(200, 200);
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+    CGFloat red = arc4random_uniform(255) / 255.0;
+    CGFloat green = arc4random_uniform(255) / 255.0;
+    CGFloat blue = arc4random_uniform(255) / 255.0;
+    
+    [[UIColor colorWithRed:red green:green blue:blue alpha:1.0] setFill];
+    UIRectFill(CGRectMake(0, 0, size.width, size.height));
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 @end

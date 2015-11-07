@@ -11,6 +11,7 @@
 #import "JsonDataGetter.h"
 
 @interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@property (strong, nonatomic) IBOutlet UITableView *detailTableView;
 
 
 @end
