@@ -26,11 +26,15 @@
     NSOperationQueue *loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
 
     _thumbnails = [[NSMutableArray alloc]init];
-    characters = [[JsonDataGetter alloc] initWithCategory:@"0-10_PR_Cars" withLimit:20];
+    characters = [[JsonDataGetter alloc] initWithCategory:@"Cars_A-Z" withLimit:200];
     [characters downloadJsonData];
+    
     while (![characters getTopTitles]) {
         usleep(50000);
+        
     }
+    
+    [characters sortInAlphabeticalOrder];
     //NSLog(@"%@",[characters getTopTitles]);
     _tableData = [characters getTopTitles];
     for (int i = 0; i < characters.topTitles.count; i++) {
