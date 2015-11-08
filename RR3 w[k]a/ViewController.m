@@ -70,7 +70,14 @@
     
     if (self.isMovingFromParentViewController || self.isBeingDismissed) {
         [self.loadingThumbnailsQueue cancelAllOperations];
-        NSLog(@"bye bye");
+        //NSLog(@"bye bye");
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:@"ShowWebViewSegue"]){
+        WebViewController *controller = (WebViewController *)segue.destinationViewController;
+        controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
     }
 }
 
@@ -97,8 +104,13 @@
 }
 
 -(UIImage *)downloadImageWithUrl:(NSString *)url{
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    UIImage *tempImage = [UIImage imageWithData:imageData];
+    UIImage *tempImage;
+    if(url == [NSNull null]){
+        tempImage = [self genereteBlankImage];
+    }else{
+        NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+        tempImage = [UIImage imageWithData:imageData];
+    }
     return tempImage;
 }
 

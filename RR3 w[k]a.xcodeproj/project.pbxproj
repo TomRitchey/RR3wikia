@@ -17,6 +17,7 @@
 		A79F033C1BEE72A1001F0C90 /* RR3_w_k_aTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F033B1BEE72A1001F0C90 /* RR3_w_k_aTests.m */; };
 		A79F03471BEE72A1001F0C90 /* RR3_w_k_aUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03461BEE72A1001F0C90 /* RR3_w_k_aUITests.m */; };
 		A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */; };
+		A7ABC5BE1BEFA42000EFC623 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */; };
 		A7F41DBD1BEF47570021E96D /* JsonDataGetterParent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,8 @@
 		A79F03481BEE72A2001F0C90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataGetter.h; sourceTree = "<group>"; };
 		A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataGetter.m; sourceTree = "<group>"; };
+		A7ABC5BC1BEFA42000EFC623 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataGetterParent.h; sourceTree = "<group>"; };
 		A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataGetterParent.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +120,8 @@
 				A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */,
 				A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */,
 				A79F032A1BEE72A1001F0C90 /* Main.storyboard */,
+				A7ABC5BC1BEFA42000EFC623 /* WebViewController.h */,
+				A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */,
 				A79F03271BEE72A1001F0C90 /* ViewController.h */,
 				A79F03281BEE72A1001F0C90 /* ViewController.m */,
 				A79108DA1BEF7A2F00773C0E /* TableViewController.h */,
@@ -289,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79F03291BEE72A1001F0C90 /* ViewController.m in Sources */,
+				A7ABC5BE1BEFA42000EFC623 /* WebViewController.m in Sources */,
 				A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */,
 				A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */,
 				A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */,

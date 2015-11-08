@@ -34,7 +34,13 @@
                             <outlet property="delegate" destination="ruZ-S6-vtk" id="utc-3A-4D1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Categories" id="qNf-tL-sya"/>
+                    <navigationItem key="navigationItem" title="Categories" id="qNf-tL-sya">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="0vZ-Mc-xH8">
+                            <connections>
+                                <action selector="addButtonPressed:" destination="ruZ-S6-vtk" id="kbl-iW-r1a"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="masterTableView" destination="7mg-hF-gGl" id="tom-Va-LMF"/>
                     </connections>
@@ -53,7 +59,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="u9J-CT-Eks">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SimpleTableItem" id="u9J-CT-Eks">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u9J-CT-Eks" id="Mke-3X-oJp">
@@ -62,6 +68,9 @@
                                     <animations/>
                                 </tableViewCellContentView>
                                 <animations/>
+                                <connections>
+                                    <segue destination="CtE-51-1nB" kind="show" identifier="ShowWebViewSegue" id="krm-xJ-QCn"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -69,9 +78,7 @@
                             <outlet property="delegate" destination="6J8-uu-B1M" id="vsr-Vq-uUQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="hxz-40-etK">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="k0N-1v-SFx"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Title" id="hxz-40-etK"/>
                     <connections>
                         <outlet property="navigationItem" destination="hxz-40-etK" id="rXd-WL-XjR"/>
                         <outlet property="subTableView" destination="2iz-Zp-BOE" id="fVz-dY-viW"/>
@@ -80,6 +87,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WFg-Oy-tp8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="203" y="592"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="EhR-Ua-MzP">
+            <objects>
+                <viewController id="CtE-51-1nB" customClass="WebViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NHw-rI-Y1r"/>
+                        <viewControllerLayoutGuide type="bottom" id="u8I-eq-gsf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZmZ-mW-krb">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OKk-YC-qr7">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="OKk-YC-qr7" secondAttribute="trailing" id="9M9-oK-mwg"/>
+                            <constraint firstItem="OKk-YC-qr7" firstAttribute="top" secondItem="NHw-rI-Y1r" secondAttribute="bottom" id="L0W-mS-0Ao"/>
+                            <constraint firstItem="OKk-YC-qr7" firstAttribute="bottom" secondItem="u8I-eq-gsf" secondAttribute="top" id="Mgs-Dh-Ai1"/>
+                            <constraint firstItem="OKk-YC-qr7" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leading" id="QiP-kD-sDs"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="tkT-mY-nwc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yeb-rk-o9h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="865" y="591"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GJb-qu-qEK">

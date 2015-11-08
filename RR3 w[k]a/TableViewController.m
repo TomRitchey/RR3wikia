@@ -10,6 +10,8 @@
 
 @interface TableViewController ()
 
+
+
 @end
 
 @implementation TableViewController
@@ -38,6 +40,43 @@
         }
 }
 
+- (IBAction)addButtonPressed:(id)sender {
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Add new category"
+                                          message:@"Type your new category"
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
+     {
+         textField.placeholder = @"newCategoryPlaceholder";
+     }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction *action)
+                                   {
+                                      
+                                   }];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:@"OK"
+                               style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action)
+                               {
+                                   UITextField *newCategory = alertController.textFields.firstObject;
+                                   [self.categories addObject:newCategory.text];
+                                   [self.masterTableView reloadData];
+                               }];
+    
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -47,38 +86,52 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *simpleTableIdentifier = @"MasterTableItem";
+    static NSString *mainTableIdentifier = @"MasterTableItem";
+//    static NSString *addTableIdentifier = @"AddCell";
+//
+
     
-    UITableViewCell *cell = [self.masterTableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    UITableViewCell *cell = [self.masterTableView dequeueReusableCellWithIdentifier:mainTableIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:mainTableIdentifier];
     }
-    cell.textLabel.text = [self.categories objectAtIndex:indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+        cell.textLabel.text = [self.categories objectAtIndex:indexPath.row];
+    
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     return cell;
 }
 
 
-/*
+
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
+
     return YES;
 }
-*/
 
-/*
+
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [self.categories removeObjectAtIndex:indexPath.row];
+    
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
 
 /*
 // Override to support rearranging the table view.

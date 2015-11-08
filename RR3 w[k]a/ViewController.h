@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import "JsonDataGetter.h"
+#import "WebViewController.h"
 
 @interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
