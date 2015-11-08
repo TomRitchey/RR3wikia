@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Categories-->
         <scene sceneID="HTb-Jt-gci">
             <objects>
                 <tableViewController id="ruZ-S6-vtk" customClass="TableViewController" sceneMemberID="viewController">
@@ -25,7 +25,7 @@
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <segue destination="6J8-uu-B1M" kind="show" id="qLe-wK-0VC"/>
+                                    <segue destination="6J8-uu-B1M" kind="show" identifier="ItemsFromCategorySegue" id="qLe-wK-0VC"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -34,7 +34,7 @@
                             <outlet property="delegate" destination="ruZ-S6-vtk" id="utc-3A-4D1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="qNf-tL-sya"/>
+                    <navigationItem key="navigationItem" title="Categories" id="qNf-tL-sya"/>
                     <connections>
                         <outlet property="masterTableView" destination="7mg-hF-gGl" id="tom-Va-LMF"/>
                     </connections>
@@ -73,6 +73,7 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="k0N-1v-SFx"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="navigationItem" destination="hxz-40-etK" id="rXd-WL-XjR"/>
                         <outlet property="subTableView" destination="2iz-Zp-BOE" id="fVz-dY-viW"/>
                     </connections>
                 </tableViewController>

@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.categories = [[NSMutableArray alloc] init];
-    [self.categories addObject:@"Cars_A-Z"];
+    [self.categories addObjectsFromArray:[ NSArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -29,6 +29,13 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+        if([segue.identifier isEqualToString:@"ItemsFromCategorySegue"]){
+            ViewController *controller = (ViewController *)segue.destinationViewController;
+            controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
+        }
 }
 
 #pragma mark - Table view data source

@@ -14,7 +14,8 @@
 }
 @property NSMutableArray *thumbnails;
 @property NSMutableArray *tableData;
-    
+@property NSOperationQueue *loadingThumbnailsQueue;
+@property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @end
 
@@ -23,10 +24,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSOperationQueue *loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
+    self.navigationItem.title  = self.category;
+    self.category = [self.category stringByReplacingOccurrencesOfString:@" "
+                                                   withString:@"_"];
+    self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
 
     _thumbnails = [[NSMutableArray alloc]init];
-    characters = [[JsonDataGetter alloc] initWithCategory:@"Cars_A-Z" withLimit:200];
+    characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
     [characters downloadJsonData];
     
     while (![characters getTopTitles]) {
@@ -40,6 +44,8 @@
     for (int i = 0; i < characters.topTitles.count; i++) {
         [_thumbnails addObject:[self genereteBlankImage]];
         __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+            //if([downloadImageOperation isCancelled]){return;}
+            
             UIImage *image = [self downloadImageWithUrl:[[characters getTopThumbnails]objectAtIndex:i]];
             if(image!=nil && ![downloadImageOperation isCancelled]){
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -48,7 +54,7 @@
                 });
             }
         }];
-        [loadingThumbnailsQueue addOperation:downloadImageOperation];
+        [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
     }
     [self.subTableView reloadData];
     
@@ -58,6 +64,17 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.isMovingFromParentViewController || self.isBeingDismissed) {
+        [self.loadingThumbnailsQueue cancelAllOperations];
+        NSLog(@"bye bye");
+    }
+}
+
+#pragma mark table view
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

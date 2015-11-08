@@ -13,6 +13,7 @@
 @interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) IBOutlet UITableView *subTableView;
+@property NSString *category;
 
 
 @end
