@@ -92,7 +92,15 @@
     }
     cell.imageView.image = [_thumbnails objectAtIndex:indexPath.row];
     cell.textLabel.text = [_tableData objectAtIndex:indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    UIImage *image = [UIImage imageNamed:@"globe_icon.png"];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    
+    CGRect frame = [tableView rectForRowAtIndexPath:indexPath];
+    [imageView setFrame:CGRectMake(0, 0, frame.size.height*0.6, frame.size.height*0.6)];
+    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [imageView setTintColor:[UIColor colorWithWhite:0.5 alpha:1]];
+    cell.accessoryView = imageView;
     return cell;
 }
 

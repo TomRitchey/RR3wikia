@@ -19,6 +19,7 @@
 		A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */; };
 		A7ABC5BE1BEFA42000EFC623 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */; };
 		A7ABC5C11BEFF51F00EFC623 /* ManufacturersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABC5C01BEFF51F00EFC623 /* ManufacturersViewController.m */; };
+		A7ABC5C31BEFFBEB00EFC623 /* globe_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */; };
 		A7F41DBD1BEF47570021E96D /* JsonDataGetterParent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		A7ABC5BF1BEFF51F00EFC623 /* ManufacturersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManufacturersViewController.h; sourceTree = "<group>"; };
 		A7ABC5C01BEFF51F00EFC623 /* ManufacturersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManufacturersViewController.m; sourceTree = "<group>"; };
+		A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = globe_icon.png; sourceTree = "<group>"; };
 		A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataGetterParent.h; sourceTree = "<group>"; };
 		A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataGetterParent.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +98,7 @@
 		A79F03151BEE72A0001F0C90 = {
 			isa = PBXGroup;
 			children = (
+				A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */,
 				A79F03201BEE72A1001F0C90 /* RR3 w[k]a */,
 				A79F033A1BEE72A1001F0C90 /* RR3 w[k]aTests */,
 				A79F03451BEE72A1001F0C90 /* RR3 w[k]aUITests */,
@@ -271,6 +274,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7ABC5C31BEFFBEB00EFC623 /* globe_icon.png in Resources */,
 				A79F03311BEE72A1001F0C90 /* LaunchScreen.storyboard in Resources */,
 				A79F032E1BEE72A1001F0C90 /* Assets.xcassets in Resources */,
 				A79F032C1BEE72A1001F0C90 /* Main.storyboard in Resources */,
