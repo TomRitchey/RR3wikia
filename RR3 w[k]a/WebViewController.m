@@ -18,6 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title  = self.pageTitle;
+    //NSLog(@"%@",self.url);
+    NSURL *url = [NSURL URLWithString:self.url ];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [self.webView loadRequest:requestObj];
     // Do any additional setup after loading the view.
 }
 

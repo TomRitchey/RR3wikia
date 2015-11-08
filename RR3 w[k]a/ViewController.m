@@ -14,6 +14,8 @@
 }
 @property NSMutableArray *thumbnails;
 @property NSMutableArray *tableData;
+
+@property NSMutableArray *urlData;
 @property NSOperationQueue *loadingThumbnailsQueue;
 @property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
@@ -41,6 +43,7 @@
     [characters sortInAlphabeticalOrder];
     //NSLog(@"%@",[characters getTopTitles]);
     _tableData = [characters getTopTitles];
+    _urlData = [characters getTopUrls];
     for (int i = 0; i < characters.topTitles.count; i++) {
         [_thumbnails addObject:[self genereteBlankImage]];
         __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
@@ -78,6 +81,7 @@
     if([segue.identifier isEqualToString:@"ShowWebViewSegue"]){
         WebViewController *controller = (WebViewController *)segue.destinationViewController;
         controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+        controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
     }
 }
 

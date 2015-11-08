@@ -11,6 +11,7 @@
 @interface WebViewController : UIViewController
 
 @property NSString *pageTitle;
-@property NSURL *url;
+@property NSString *url;
+@property (strong, nonatomic) IBOutlet UIWebView *webView;
 
 @end
