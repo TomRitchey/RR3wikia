@@ -44,13 +44,13 @@
             if(image!=nil && ![downloadImageOperation isCancelled]){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_thumbnails replaceObjectAtIndex:i withObject:image];
-                    [self.detailTableView reloadData];
+                    [self.subTableView reloadData];
                 });
             }
         }];
         [loadingThumbnailsQueue addOperation:downloadImageOperation];
     }
-    [self.detailTableView reloadData];
+    [self.subTableView reloadData];
     
 }
 
@@ -75,6 +75,7 @@
     }
     cell.imageView.image = [_thumbnails objectAtIndex:indexPath.row];
     cell.textLabel.text = [_tableData objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79108DB1BEF7A2F00773C0E /* TableViewController.m */; };
 		A79F03231BEE72A1001F0C90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03221BEE72A1001F0C90 /* main.m */; };
 		A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03251BEE72A1001F0C90 /* AppDelegate.m */; };
 		A79F03291BEE72A1001F0C90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03281BEE72A1001F0C90 /* ViewController.m */; };
@@ -37,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A79108DA1BEF7A2F00773C0E /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		A79108DB1BEF7A2F00773C0E /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		A79F031E1BEE72A0001F0C90 /* RR3 w[k]a.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RR3 w[k]a.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79F03221BEE72A1001F0C90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A79F03241BEE72A1001F0C90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 				A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */,
 				A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */,
 				A79F032A1BEE72A1001F0C90 /* Main.storyboard */,
+				A79108DA1BEF7A2F00773C0E /* TableViewController.h */,
+				A79108DB1BEF7A2F00773C0E /* TableViewController.m */,
 				A79F032D1BEE72A1001F0C90 /* Assets.xcassets */,
 				A79F032F1BEE72A1001F0C90 /* LaunchScreen.storyboard */,
 				A79F03321BEE72A1001F0C90 /* Info.plist */,
@@ -284,6 +289,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79F03291BEE72A1001F0C90 /* ViewController.m in Sources */,
+				A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */,
 				A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */,
 				A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */,
 				A79F03231BEE72A1001F0C90 /* main.m in Sources */,

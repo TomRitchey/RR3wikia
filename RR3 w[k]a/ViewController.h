@@ -10,8 +10,9 @@
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import "JsonDataGetter.h"
 
-@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-@property (strong, nonatomic) IBOutlet UITableView *detailTableView;
+@interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (strong, nonatomic) IBOutlet UITableView *subTableView;
 
 
 @end
