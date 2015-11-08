@@ -18,8 +18,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.superCategories = [[NSMutableArray alloc] init];
+    [self.superCategories addObjectsFromArray:[ NSArray arrayWithObjects:@"Manufacturers",  nil]];
+    
     self.categories = [[NSMutableArray alloc] init];
-    [self.categories addObjectsFromArray:[ NSArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]];
+    
+    [self.categories addObjectsFromArray:self.superCategories];
+        [self.categories addObjectsFromArray:[ NSArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -34,10 +40,10 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-        if([segue.identifier isEqualToString:@"ItemsFromCategorySegue"]){
+    
             ViewController *controller = (ViewController *)segue.destinationViewController;
             controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
-        }
+        
 }
 
 - (IBAction)addButtonPressed:(id)sender {
@@ -81,15 +87,30 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 //#warning Incomplete implementation, return the number of rows
-    return [self.categories count];
+    return ([self.categories count]);
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *mainTableIdentifier = @"MasterTableItem";
-//    static NSString *addTableIdentifier = @"AddCell";
-//
+    static NSString *addTableIdentifier = @"ManufacturerTableItem";
 
+    //UITableViewCell *cell = [[UITableViewCell alloc]init];
+    
+//    if([[self.categories objectAtIndex: indexPath.row ] isEqualToString:[NSString stringWithFormat:@"Manufacturers"]]){
+    if([self.superCategories containsObject:[self.categories objectAtIndex: indexPath.row ]]){
+        UITableViewCell *cell = [self.masterTableView dequeueReusableCellWithIdentifier:addTableIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:addTableIdentifier];
+        }
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"Manufacturers"];
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"Shows list of subcategories instead of articles"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        return cell;
+    }else{
     
     
     UITableViewCell *cell = [self.masterTableView dequeueReusableCellWithIdentifier:mainTableIdentifier];
@@ -99,10 +120,10 @@
     }
     
         cell.textLabel.text = [self.categories objectAtIndex:indexPath.row];
-    
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-    return cell;
+        return cell;
+    }
+    
 }
 
 
@@ -110,7 +131,9 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    if (indexPath.row == 0) {
+        return NO;
+    }
     return YES;
 }
 
@@ -123,7 +146,6 @@
     
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         

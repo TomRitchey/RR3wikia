@@ -9,15 +9,6 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-{
-        JsonDataGetter *characters;
-}
-@property NSMutableArray *thumbnails;
-@property NSMutableArray *tableData;
-
-@property NSMutableArray *urlData;
-@property NSOperationQueue *loadingThumbnailsQueue;
-@property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @end
 
@@ -78,11 +69,9 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"ShowWebViewSegue"]){
         WebViewController *controller = (WebViewController *)segue.destinationViewController;
         controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
         controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
-    }
 }
 
 #pragma mark table view

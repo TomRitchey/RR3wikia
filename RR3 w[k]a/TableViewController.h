@@ -12,6 +12,7 @@
 @interface TableViewController : UITableViewController
 
 @property NSMutableArray *categories;
+@property NSMutableArray *superCategories;
 @property (strong, nonatomic) IBOutlet UITableView *masterTableView;
 
 @end

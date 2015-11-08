@@ -12,6 +12,15 @@
 #import "WebViewController.h"
 
 @interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+{
+    JsonDataGetter *characters;
+}
+@property NSMutableArray *thumbnails;
+@property NSMutableArray *tableData;
+
+@property NSMutableArray *urlData;
+@property NSOperationQueue *loadingThumbnailsQueue;
+@property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @property (strong, nonatomic) IBOutlet UITableView *subTableView;
 @property NSString *category;
