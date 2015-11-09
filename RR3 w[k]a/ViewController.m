@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
     self.navigationItem.title  = self.category;
     self.category = [self.category stringByReplacingOccurrencesOfString:@" "
                                                    withString:@"_"];
@@ -37,14 +37,23 @@
     _urlData = [characters getTopUrls];
     for (int i = 0; i < characters.topTitles.count; i++) {
         [_thumbnails addObject:[self genereteBlankImage]];
+    }
+    for (int i = 0; i < characters.topTitles.count; i++) {
         __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
             //if([downloadImageOperation isCancelled]){return;}
             
             UIImage *image = [self downloadImageWithUrl:[[characters getTopThumbnails]objectAtIndex:i]];
+            if([downloadImageOperation isCancelled]){return;}
             if(image!=nil && ![downloadImageOperation isCancelled]){
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    if([downloadImageOperation isCancelled]){return;}
                     [_thumbnails replaceObjectAtIndex:i withObject:image];
-                    [self.subTableView reloadData];
+                    if([downloadImageOperation isCancelled]){return;}
+                    //[self.subTableView reloadData];
+                    if ([[self.subTableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:i inSection:0]]) {
+                        [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]]
+                                             withRowAnimation:UITableViewRowAnimationFade];
+                    }
                 });
             }
         }];

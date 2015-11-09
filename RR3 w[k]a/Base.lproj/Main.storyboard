@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Categories-->
@@ -131,28 +132,67 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OKk-YC-qr7">
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vIk-OU-w5w">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="CtE-51-1nB" id="Dcp-b9-O4j"/>
+                                </connections>
                             </webView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OkX-Na-hHY">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Htv-5G-5zN"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem systemItem="rewind" id="swb-Z2-Wkd">
+                                        <connections>
+                                            <action selector="rewindButtonPressed:" destination="CtE-51-1nB" id="Dtf-66-b1O"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Back" width="102" id="DT8-cV-koe">
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="CtE-51-1nB" id="51b-OI-AY1"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Forward" width="86" id="Wwp-tD-GYr">
+                                        <connections>
+                                            <action selector="forwardButtonPressed:" destination="CtE-51-1nB" id="oKB-84-OJw"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="OKk-YC-qr7" secondAttribute="trailing" id="BNa-l9-46Y"/>
-                            <constraint firstItem="OKk-YC-qr7" firstAttribute="bottom" secondItem="u8I-eq-gsf" secondAttribute="top" id="GaP-3r-Ang"/>
-                            <constraint firstItem="OKk-YC-qr7" firstAttribute="top" secondItem="ZmZ-mW-krb" secondAttribute="top" id="Xcl-c9-pzT"/>
-                            <constraint firstItem="OKk-YC-qr7" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leading" id="srP-Yz-kfb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OkX-Na-hHY" secondAttribute="trailing" constant="-20" id="Chp-2K-Okh"/>
+                            <constraint firstItem="vIk-OU-w5w" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" constant="-20" id="EKH-rZ-lci"/>
+                            <constraint firstItem="OkX-Na-hHY" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" constant="-20" id="REp-bX-1zX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vIk-OU-w5w" secondAttribute="trailing" constant="-20" id="W2a-er-87i"/>
+                            <constraint firstItem="u8I-eq-gsf" firstAttribute="top" secondItem="vIk-OU-w5w" secondAttribute="bottom" id="dQz-je-Dv7"/>
+                            <constraint firstItem="vIk-OU-w5w" firstAttribute="top" secondItem="ZmZ-mW-krb" secondAttribute="topMargin" id="eUI-mD-eEM"/>
+                            <constraint firstItem="u8I-eq-gsf" firstAttribute="top" secondItem="OkX-Na-hHY" secondAttribute="bottom" id="hCQ-KO-aLh"/>
+                            <constraint firstItem="OkX-Na-hHY" firstAttribute="top" secondItem="vIk-OU-w5w" secondAttribute="bottom" id="zHz-yP-4nv"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="zHz-yP-4nv"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
-                        <outlet property="webView" destination="OKk-YC-qr7" id="TvE-JT-HGg"/>
+                        <outlet property="backButton" destination="DT8-cV-koe" id="mWm-V1-qQu"/>
+                        <outlet property="forwardButton" destination="Wwp-tD-GYr" id="OM1-uF-6fe"/>
+                        <outlet property="rewindButton" destination="swb-Z2-Wkd" id="FC7-5Z-moQ"/>
+                        <outlet property="webView" destination="vIk-OU-w5w" id="Q6u-np-0Gq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yeb-rk-o9h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1047" y="591"/>
+            <point key="canvasLocation" x="1039" y="592"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GJb-qu-qEK">

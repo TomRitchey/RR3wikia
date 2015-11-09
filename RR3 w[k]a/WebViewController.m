@@ -8,27 +8,125 @@
 
 #import "WebViewController.h"
 
+
 @interface WebViewController ()
+{
+    bool isGoBackChanged;
+}
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 
-@end
 
+@end
 @implementation WebViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+   
+    [self.forwardButton setTintColor:[UIColor grayColor]];
+    [self.backButton
+     setTintColor:[UIColor grayColor]];
+
+    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
+    self.allowLoad = YES;
     self.navigationItem.title  = self.pageTitle;
     //NSLog(@"%@",self.url);
-    NSURL *url = [NSURL URLWithString:self.url ];
+    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+
+    NSURL *url = [NSURL URLWithString:urlWithHeight ];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:requestObj];
-    // Do any additional setup after loading the view.
+    
+    //[self.scrollview addSubview:self.webView];
+    
+    
+//    WKPreferences *thePreferences = [[WKPreferences alloc] init];
+//    thePreferences.javaScriptEnabled = NO;
+//    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
+//    //theConfiguration.preferences = thePreferences;
+//    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:theConfiguration];
+//   
+//    
+//    //webView.navigationDelegate = self;
+//    NSURL *nsurl = [NSURL URLWithString:self.url ];
+//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
+//    [webView loadRequest:nsrequest];
+//    [webView setUserInteractionEnabled:NO];
+//    [self.view addSubview:webView];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    self.allowLoad = YES;
+    //[self.webView setUserInteractionEnabled:self.allowLoad];
+}
+
+#pragma mark web wiew (note notworking - no UIWebViewDelegate)
+
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+
+    if (navigationType == UIWebViewNavigationTypeOther) {
+   
+    }  
+    //return YES;
+    return self.allowLoad;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView*)webView {
+    self.allowLoad = NO;
+    //[self.webView setUserInteractionEnabled:self.allowLoad];
+}
+
+#pragma mark handling bottom bar buttons
+
+- (IBAction)rewindButtonPressed:(id)sender {
+    [self.webView stopLoading];
+    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+    
+    NSURL *url = [NSURL URLWithString:urlWithHeight ];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [self.webView loadRequest:requestObj];
+}
+- (IBAction)backButtonPressed:(id)sender {
+    if ([self.webView canGoBack]){
+        [self.webView goBack];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        usleep(2000000);
+        [self navigationButtonsColors];
+    });
+}
+- (IBAction)forwardButtonPressed:(id)sender {
+    //NSLog(@"%d",self.webView.canGoForward);
+    if ([self.webView canGoForward]){
+        [self.webView goForward];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        usleep(2500000);
+        [self navigationButtonsColors];
+    });
+}
+
+- (void)navigationButtonsColors{
+    if ([self.webView canGoForward]){
+        [self.forwardButton setTintColor:[UIColor blueColor]];
+    }else{
+        [self.forwardButton setTintColor:[UIColor grayColor]];
+    }
+    if ([self.webView canGoBack]){
+        [self.backButton setTintColor:[UIColor blueColor]];
+    }else{
+        [self.backButton setTintColor:[UIColor grayColor]];
+    }
+}
+
+
 
 /*
 #pragma mark - Navigation
