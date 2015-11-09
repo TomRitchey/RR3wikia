@@ -19,13 +19,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     self.superCategories = [[NSMutableArray alloc] init];
     [self.superCategories addObjectsFromArray:[ NSArray arrayWithObjects:@"Manufacturers",  nil]];
     
     self.categories = [[NSMutableArray alloc] init];
+    self.noobCategories = [[NSMutableArray alloc] init];
+    
+    NSMutableArray *memory = [[NSUserDefaults standardUserDefaults] objectForKey:HSMEMORY];
     
     [self.categories addObjectsFromArray:self.superCategories];
-        [self.categories addObjectsFromArray:[ NSArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]];
+    //NSLog(@"%@",self.superCategories);
+    [self.noobCategories addObjectsFromArray:memory];
+    //NSLog(@"%@ memory",memory);
+    [self.categories addObjectsFromArray:self.noobCategories];
+    //NSLog(@"%@",self.categories);
+    
+    
+    
+    //[self addObserver:self forKeyPath:@"self.categories" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -43,7 +55,17 @@
     
             ViewController *controller = (ViewController *)segue.destinationViewController;
             controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
-        
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    NSLog(@"observer");
+//    if ([keyPath isEqualToString:@"self.categories"]) {
+//        self.noobCategories = self.categories;
+//        [self.noobCategories removeObjectsInRange:NSMakeRange(0,self.superCategories.count-1)];
+//            [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
+//
+//    }
+    
 }
 
 - (IBAction)addButtonPressed:(id)sender {
@@ -71,7 +93,8 @@
                                handler:^(UIAlertAction *action)
                                {
                                    UITextField *newCategory = alertController.textFields.firstObject;
-                                   [self.categories addObject:newCategory.text];
+                                   [self addCategory:newCategory.text];
+                                   //[self.categories addObject:newCategory.text];
                                    [self.masterTableView reloadData];
                                }];
     
@@ -141,10 +164,11 @@
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    [self.categories removeObjectAtIndex:indexPath.row];
-    
-    
+    [self removeCategory:indexPath];
+//    [self.categories removeObjectAtIndex:indexPath.row];
+//    [self.noobCategories removeObjectAtIndex:indexPath.row - self.superCategories.count];
+//    [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
+//    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
 
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -154,7 +178,18 @@
     }   
 }
 
+-(void)removeCategory:(NSIndexPath*)indexPath{
+    [self.categories removeObjectAtIndex:indexPath.row];
+    [self.noobCategories removeObjectAtIndex:(indexPath.row - self.superCategories.count)];
+    [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
+}
 
+-(void)addCategory:(NSString*)string{
+    
+    [self.categories addObject:string];
+    [self.noobCategories addObject:string];
+    [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
+}
 /*
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
+#import "AppDelegate.h"
 
 @interface TableViewController : UITableViewController
 
+@property NSMutableArray *noobCategories;
 @property NSMutableArray *categories;
 @property NSMutableArray *superCategories;
 @property (strong, nonatomic) IBOutlet UITableView *masterTableView;

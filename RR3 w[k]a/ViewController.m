@@ -16,18 +16,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
     self.navigationItem.title  = self.category;
-    self.category = [self.category stringByReplacingOccurrencesOfString:@" "
-                                                   withString:@"_"];
+    self.category = [self replaceCharacters:self.category];
     self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
 
     _thumbnails = [[NSMutableArray alloc]init];
     characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
-    [characters downloadJsonData];
     
+    
+    [characters downloadJsonData];
+   // NSLog(@"%@",self.category);
     while (![characters getTopTitles]) {
         usleep(50000);
+        
+       // NSLog(@"%@",characters);
         
     }
     
@@ -138,6 +142,15 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+}
+
+- (NSString *)replaceCharacters:(NSString *)string{
+    
+    string = [string stringByReplacingOccurrencesOfString:@" "
+                                             withString:@"_"];
+    string = [string stringByReplacingOccurrencesOfString:@"$"
+                                               withString:@"%24"];
+    return string;
 }
 
 @end

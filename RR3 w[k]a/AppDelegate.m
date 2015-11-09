@@ -17,6 +17,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSMutableArray *defaultMemory = [[NSMutableArray alloc] initWithArray:[NSMutableArray arrayWithObjects: @"Cars that can be purchased with R$",@"Cars that can be purchased with gold", nil]];
+    //[NSMutableArray arrayWithObjects: @"Cars that can be purchased with R$‏‎", @"Cars that can be purchased with gold‏‎",@"Cars that can be won in special events‏‎", nil]
+    //[NSMutableArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]
+    NSDictionary *appDefaults = [NSDictionary
+                                 dictionaryWithObjectsAndKeys:
+                                 defaultMemory, HSMEMORY, nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    
     return YES;
 }
 

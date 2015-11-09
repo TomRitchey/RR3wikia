@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#define HSMEMORY @"hsMemory"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

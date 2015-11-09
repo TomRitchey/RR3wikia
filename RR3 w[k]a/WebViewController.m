@@ -35,6 +35,7 @@
 
     NSURL *url = [NSURL URLWithString:urlWithHeight ];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+   
     [self.webView loadRequest:requestObj];
     
     //[self.scrollview addSubview:self.webView];
@@ -64,22 +65,29 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     self.allowLoad = YES;
-    //[self.webView setUserInteractionEnabled:self.allowLoad];
+    if([self.webView isLoading])
+        {
+            [self.webView stopLoading];
+        }
+    
 }
 
 #pragma mark web wiew (note notworking - no UIWebViewDelegate)
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-
+//NSLog(@" click?? ");
     if (navigationType == UIWebViewNavigationTypeOther) {
-   
+        
+        NSLog(@" click ");
     }  
     //return YES;
+    //NSLog(@"%d",self.allowLoad);
     return self.allowLoad;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView*)webView {
     self.allowLoad = NO;
+    NSLog(@" teraz ");
     //[self.webView setUserInteractionEnabled:self.allowLoad];
 }
 
