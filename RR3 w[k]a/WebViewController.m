@@ -78,47 +78,48 @@
 //NSLog(@" click?? ");
     if (navigationType == UIWebViewNavigationTypeOther) {
         
-        NSLog(@" click ");
+        //NSLog(@" click ");
     }  
     //return YES;
     //NSLog(@"%d",self.allowLoad);
+    [self navigationButtonsColors];
     return self.allowLoad;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView*)webView {
     self.allowLoad = NO;
-    NSLog(@" teraz ");
+   // NSLog(@" teraz ");
     //[self.webView setUserInteractionEnabled:self.allowLoad];
 }
 
 #pragma mark handling bottom bar buttons
 
-- (IBAction)rewindButtonPressed:(id)sender {
-    [self.webView stopLoading];
-    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
-    
-    NSURL *url = [NSURL URLWithString:urlWithHeight ];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:requestObj];
-}
+//- (IBAction)rewindButtonPressed:(id)sender {
+//    [self.webView stopLoading];
+//    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+//    
+//    NSURL *url = [NSURL URLWithString:urlWithHeight ];
+//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+//    [self.webView loadRequest:requestObj];
+//}
 - (IBAction)backButtonPressed:(id)sender {
     if ([self.webView canGoBack]){
         [self.webView goBack];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        usleep(2000000);
-        [self navigationButtonsColors];
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        usleep(2000000);
+//        [self navigationButtonsColors];
+//    });
 }
 - (IBAction)forwardButtonPressed:(id)sender {
     //NSLog(@"%d",self.webView.canGoForward);
     if ([self.webView canGoForward]){
         [self.webView goForward];
     }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        usleep(2500000);
-        [self navigationButtonsColors];
-    });
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        usleep(2500000);
+//        [self navigationButtonsColors];
+//    });
 }
 
 - (void)navigationButtonsColors{
@@ -130,7 +131,15 @@
     if ([self.webView canGoBack]){
         [self.backButton setTintColor:[UIColor blueColor]];
     }else{
-        [self.backButton setTintColor:[UIColor grayColor]];
+        [self.backButton setTintColor:[UIColor lightGrayColor]];
+    }
+    
+    if (![self.webView canGoForward]&&![self.webView canGoBack]) {
+        [self.toolbar setHidden:YES];
+        //[self.navigationController setToolbarHidden:YES animated:YES];
+    }else{
+        //[self.navigationController setToolbarHidden:NO animated:YES];
+        [self.toolbar setHidden:NO];
     }
 }
 

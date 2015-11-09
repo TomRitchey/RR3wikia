@@ -21,7 +21,7 @@
     
     
     self.superCategories = [[NSMutableArray alloc] init];
-    [self.superCategories addObjectsFromArray:[ NSArray arrayWithObjects:@"Manufacturers",  nil]];
+    [self.superCategories addObjectsFromArray:[ NSArray arrayWithObjects:@"Manufacturers",@"Racing series",  nil]];
     
     self.categories = [[NSMutableArray alloc] init];
     self.noobCategories = [[NSMutableArray alloc] init];
@@ -57,8 +57,8 @@
             controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
 }
 
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-    NSLog(@"observer");
+//-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    //NSLog(@"observer");
 //    if ([keyPath isEqualToString:@"self.categories"]) {
 //        self.noobCategories = self.categories;
 //        [self.noobCategories removeObjectsInRange:NSMakeRange(0,self.superCategories.count-1)];
@@ -66,7 +66,7 @@
 //
 //    }
     
-}
+//}
 
 - (IBAction)addButtonPressed:(id)sender {
     UIAlertController *alertController = [UIAlertController
@@ -128,7 +128,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:addTableIdentifier];
         }
         
-        cell.textLabel.text = [NSString stringWithFormat:@"Manufacturers"];
+        cell.textLabel.text = [self.categories objectAtIndex:indexPath.row];
         
         cell.detailTextLabel.text = [NSString stringWithFormat:@"Shows list of subcategories instead of articles"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -154,7 +154,7 @@
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    if (indexPath.row < self.superCategories.count) {
         return NO;
     }
     return YES;

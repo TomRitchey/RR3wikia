@@ -147,11 +147,6 @@
                                     <constraint firstAttribute="height" constant="44" id="Htv-5G-5zN"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem systemItem="rewind" id="swb-Z2-Wkd">
-                                        <connections>
-                                            <action selector="rewindButtonPressed:" destination="CtE-51-1nB" id="Dtf-66-b1O"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem title="Back" width="102" id="DT8-cV-koe">
                                         <connections>
                                             <action selector="backButtonPressed:" destination="CtE-51-1nB" id="51b-OI-AY1"/>
@@ -186,7 +181,7 @@
                     <connections>
                         <outlet property="backButton" destination="DT8-cV-koe" id="mWm-V1-qQu"/>
                         <outlet property="forwardButton" destination="Wwp-tD-GYr" id="OM1-uF-6fe"/>
-                        <outlet property="rewindButton" destination="swb-Z2-Wkd" id="FC7-5Z-moQ"/>
+                        <outlet property="toolbar" destination="OkX-Na-hHY" id="6Sf-eG-n2m"/>
                         <outlet property="webView" destination="vIk-OU-w5w" id="Q6u-np-0Gq"/>
                     </connections>
                 </viewController>

@@ -25,13 +25,38 @@
     _thumbnails = [[NSMutableArray alloc]init];
     characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
     
+    [self downloadAndSortData];
+
     
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.isMovingFromParentViewController || self.isBeingDismissed) {
+        [self.loadingThumbnailsQueue cancelAllOperations];
+        //NSLog(@"bye bye");
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+        WebViewController *controller = (WebViewController *)segue.destinationViewController;
+        controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+        controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+}
+
+-(void)downloadAndSortData{
     [characters downloadJsonData];
-   // NSLog(@"%@",self.category);
+    // NSLog(@"%@",self.category);
     while (![characters getTopTitles]) {
         usleep(50000);
         
-       // NSLog(@"%@",characters);
+        // NSLog(@"%@",characters);
         
     }
     
@@ -56,7 +81,7 @@
                     //[self.subTableView reloadData];
                     if ([[self.subTableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:i inSection:0]]) {
                         [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]]
-                                             withRowAnimation:UITableViewRowAnimationFade];
+                                                 withRowAnimation:UITableViewRowAnimationFade];
                     }
                 });
             }
@@ -64,27 +89,6 @@
         [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
     }
     [self.subTableView reloadData];
-    
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    if (self.isMovingFromParentViewController || self.isBeingDismissed) {
-        [self.loadingThumbnailsQueue cancelAllOperations];
-        //NSLog(@"bye bye");
-    }
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-        WebViewController *controller = (WebViewController *)segue.destinationViewController;
-        controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
-        controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
 }
 
 #pragma mark table view

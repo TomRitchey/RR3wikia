@@ -14,10 +14,9 @@
 @property NSString *pageTitle;
 @property NSString *url;
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *rewindButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 
 @property bool allowLoad;
 
