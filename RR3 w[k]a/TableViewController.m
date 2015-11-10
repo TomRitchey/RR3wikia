@@ -70,9 +70,9 @@
 
 - (IBAction)addButtonPressed:(id)sender {
     
-    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_editing_list"];
+    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_adding_list"];
     
-    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Adding is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"]];
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Adding is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"] goToSettings:YES];
         [self.masterTableView reloadData];
         return;}
     
@@ -174,9 +174,9 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_editing_list"];
+    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_deleting_list"];
     
-    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Deleting is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"]];
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Deleting is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"] goToSettings:YES];
         [self.masterTableView reloadData];
         return;}
     
@@ -213,6 +213,27 @@
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {}];
     
+    [alert addAction:dismissAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+}
+
+- (void)showErrorMessageWithTitle:(NSString*)messageTitle andMessage:(NSString*)message goToSettings:(bool)goToSettings{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",messageTitle]                                                                   message:[NSString stringWithFormat:@"%@",message]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Dismiss",nil)]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    if (goToSettings) {
+        UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Settings",nil)]
+                                                            style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                                           }];
+    
+        [alert addAction:settingsAction];
+    }
     [alert addAction:dismissAction];
     [self presentViewController:alert animated:YES completion:nil];
     

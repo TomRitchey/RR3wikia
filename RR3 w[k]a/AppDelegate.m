@@ -28,8 +28,11 @@
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
     
+    NSDictionary *addingEnabled = [NSDictionary dictionaryWithObject:@"NO"
+                                                            forKey:@"enabled_adding_list"];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:addingEnabled];
     NSDictionary *editingEnabled = [NSDictionary dictionaryWithObject:@"NO"
-                                                            forKey:@"enabled_editing_list"];
+                                                               forKey:@"enabled_deleting_list"];
     [[NSUserDefaults standardUserDefaults] registerDefaults:editingEnabled];
    [[NSUserDefaults standardUserDefaults] synchronize];
     
