@@ -69,6 +69,15 @@
 //}
 
 - (IBAction)addButtonPressed:(id)sender {
+    
+    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_editing_list"];
+    
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Adding is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"]];
+        [self.masterTableView reloadData];
+        return;}
+    
+    
+    
     UIAlertController *alertController = [UIAlertController
                                           alertControllerWithTitle:@"Add new category"
                                           message:@"Type your new category"
@@ -164,13 +173,16 @@
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self removeCategory:indexPath];
-//    [self.categories removeObjectAtIndex:indexPath.row];
-//    [self.noobCategories removeObjectAtIndex:indexPath.row - self.superCategories.count];
-//    [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
-//    
+    
+    bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_editing_list"];
+    
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Deleting is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"]];
+        [self.masterTableView reloadData];
+        return;}
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-
+        
+        [self removeCategory:indexPath];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -190,6 +202,23 @@
     [self.noobCategories addObject:string];
     [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
 }
+
+#pragma mark error message
+
+- (void)showErrorMessageWithTitle:(NSString*)messageTitle andMessage:(NSString*)message{
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",messageTitle]                                                                   message:[NSString stringWithFormat:@"%@",message]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Dismiss",nil)]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:dismissAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+}
+
 /*
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {

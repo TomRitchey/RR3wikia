@@ -23,7 +23,15 @@
     NSDictionary *appDefaults = [NSDictionary
                                  dictionaryWithObjectsAndKeys:
                                  defaultMemory, HSMEMORY, nil];
+    
+    
+    
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+    
+    NSDictionary *editingEnabled = [NSDictionary dictionaryWithObject:@"NO"
+                                                            forKey:@"enabled_editing_list"];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:editingEnabled];
+   [[NSUserDefaults standardUserDefaults] synchronize];
     
     return YES;
 }

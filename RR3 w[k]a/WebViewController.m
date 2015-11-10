@@ -124,12 +124,12 @@
 
 - (void)navigationButtonsColors{
     if ([self.webView canGoForward]){
-        [self.forwardButton setTintColor:[UIColor blueColor]];
+        [self.forwardButton setTintColor:self.view.tintColor];
     }else{
         [self.forwardButton setTintColor:[UIColor grayColor]];
     }
     if ([self.webView canGoBack]){
-        [self.backButton setTintColor:[UIColor blueColor]];
+        [self.backButton setTintColor:self.view.tintColor];
     }else{
         [self.backButton setTintColor:[UIColor lightGrayColor]];
     }

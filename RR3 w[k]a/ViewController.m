@@ -25,8 +25,11 @@
     _thumbnails = [[NSMutableArray alloc]init];
     characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
     
-    [self downloadAndSortData];
-
+    if([self checkIfNetworkAwaliable]){
+        [self downloadAndSortData];
+    }else{
+        [self showErrorMessage];
+    }
     
 }
 
@@ -48,6 +51,20 @@
         WebViewController *controller = (WebViewController *)segue.destinationViewController;
         controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
         controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    //NSLog(@"url: %@",[self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]]);
+}
+
+- (bool)checkIfNetworkAwaliable{
+    bool success = NO;
+    bool isAvailable = NO;
+    const char *host_name = [@"http://rr3.wikia.com/wiki/Main_Page"
+                             cStringUsingEncoding:NSASCIIStringEncoding];
+    
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL,host_name);
+    SCNetworkReachabilityFlags flags;
+    success = SCNetworkReachabilityGetFlags(reachability, &flags);
+    isAvailable = success && (flags & kSCNetworkFlagsReachable) && !(flags & kSCNetworkFlagsConnectionRequired);
+    return isAvailable;
 }
 
 -(void)downloadAndSortData{
@@ -157,4 +174,20 @@
     return string;
 }
 
+#pragma mark alert messages
+
+- (void)showErrorMessage {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Connection",nil)
+                                                                   message:[NSString stringWithFormat:NSLocalizedString(@"Check your internet connection or try again later.",nil)]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Dismiss",nil)]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:dismissAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+}
 @end
