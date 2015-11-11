@@ -41,36 +41,62 @@
     
     NSMutableArray* firstLetters = [[NSMutableArray alloc] init];
     
+    bool firstTime = YES;
     for (int i=0;i<self.tableData.count;i++){
         NSString *firstLetter = [[self.tableData objectAtIndex:i]substringToIndex:1];
-        if (firstLetter!=currentPrefix) {
-            [firstLetters addObject:firstLetter];
-        }
+       
+        if([[self.tableData objectAtIndex:i] containsString:self.category]){
+            //NSLog(@"%@  category %@",[self.tableData objectAtIndex:i], self.category);
+            if(firstTime){
+                [firstLetters insertObject:self.category atIndex:0];
+                //[firstLetters insertObject:[NSString stringWithFormat:@"★"] atIndex:0];
+//                NSMutableArray *newArray = [[NSMutableArray alloc] init];
+                NSMutableArray *newArray = [[NSMutableArray alloc] initWithObjects:[self.tableData objectAtIndex:i], nil];
+                [sortedData insertObject:newArray atIndex:0];
+                NSMutableArray *newArray1 = [[NSMutableArray alloc] initWithObjects:[self.thumbnails objectAtIndex:i], nil];
+                [sortedThumbnails insertObject:newArray1 atIndex:0];
+                NSMutableArray *newArray2 = [[NSMutableArray alloc] initWithObjects:[self.urlData objectAtIndex:i], nil];
+                [sortedUrls insertObject:newArray2 atIndex:0];
+                NSMutableArray *newArray3 = [[NSMutableArray alloc] initWithObjects:[self.thumbnailsUrls objectAtIndex:i], nil];
+                [sortedThumbnailsUrls insertObject:newArray3 atIndex:0];
+                firstTime = NO;
+            }else{
+            [[sortedData firstObject] addObject:[self.tableData objectAtIndex:i]];
+            [[sortedThumbnails firstObject] addObject:[self.thumbnails objectAtIndex:i]];
+            [[sortedUrls firstObject] addObject:[self.urlData objectAtIndex:i]];
+            [[sortedThumbnailsUrls firstObject] addObject:[self.thumbnailsUrls objectAtIndex:i]];
+                firstTime = NO;}
+        }else{
+            if (firstLetter!=currentPrefix) {
+                [firstLetters addObject:firstLetter];
+            }
         
-        if ([currentPrefix isEqualToString:firstLetter]) {
-            [[sortedData lastObject] addObject:[self.tableData objectAtIndex:i]];
-            [[sortedThumbnails lastObject] addObject:[self.thumbnails objectAtIndex:i]];
-            [[sortedUrls lastObject] addObject:[self.urlData objectAtIndex:i]];
-            [[sortedThumbnailsUrls lastObject] addObject:[self.thumbnailsUrls objectAtIndex:i]];
-        }
+            if ([currentPrefix isEqualToString:firstLetter]) {
+                [[sortedData lastObject] addObject:[self.tableData objectAtIndex:i]];
+                [[sortedThumbnails lastObject] addObject:[self.thumbnails objectAtIndex:i]];
+                [[sortedUrls lastObject] addObject:[self.urlData objectAtIndex:i]];
+                [[sortedThumbnailsUrls lastObject] addObject:[self.thumbnailsUrls objectAtIndex:i]];
+            }
         
-        else {
-            NSMutableArray *newArray = [[NSMutableArray alloc] initWithObjects:[self.tableData objectAtIndex:i], nil];
-            [sortedData addObject:newArray];
-            NSMutableArray *newArray1 = [[NSMutableArray alloc] initWithObjects:[self.thumbnails objectAtIndex:i], nil];
-            [sortedThumbnails addObject:newArray1];
-            NSMutableArray *newArray2 = [[NSMutableArray alloc] initWithObjects:[self.urlData objectAtIndex:i], nil];
-            [sortedUrls addObject:newArray2];
-            NSMutableArray *newArray3 = [[NSMutableArray alloc] initWithObjects:[self.thumbnailsUrls objectAtIndex:i], nil];
-            [sortedThumbnailsUrls addObject:newArray3];
-        }
+            else {
+                NSMutableArray *newArray = [[NSMutableArray alloc] initWithObjects:[self.tableData objectAtIndex:i], nil];
+                [sortedData addObject:newArray];
+                NSMutableArray *newArray1 = [[NSMutableArray alloc] initWithObjects:[self.thumbnails objectAtIndex:i], nil];
+                [sortedThumbnails addObject:newArray1];
+                NSMutableArray *newArray2 = [[NSMutableArray alloc] initWithObjects:[self.urlData objectAtIndex:i], nil];
+                [sortedUrls addObject:newArray2];
+                NSMutableArray *newArray3 = [[NSMutableArray alloc] initWithObjects:[self.thumbnailsUrls objectAtIndex:i], nil];
+                [sortedThumbnailsUrls addObject:newArray3];
+            }
         
-        currentPrefix = firstLetter;
+            currentPrefix = firstLetter;
+        }
     }
     
     ///////////    ///////////    ///////////    ///////////
     
     //NSLog(@"%@",firstLetters);
+
     self.tableDataFirstLetters = firstLetters;
     self.tableData = sortedData;
     self.urlData = sortedUrls;
@@ -79,7 +105,13 @@
     
     self.numberOfSections = self.tableData.count;
     self.sectionsCount = [[NSMutableArray alloc]init];
-
+    
+    self.sectionIndexTitles = [[NSMutableArray alloc] initWithArray:self.tableDataFirstLetters];
+    if ([[self.sectionIndexTitles objectAtIndex:0]isEqualToString:self.category]) {
+        [self.sectionIndexTitles replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"★"]];
+    }
+    
+    
     for (int i = 0; i < self.numberOfSections; i++) {
         [self.sectionsCount addObject:[NSNumber numberWithInt:[[self.tableData objectAtIndex:i]count]]];
         //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
@@ -139,9 +171,6 @@
     // NSLog(@"%@",self.category);
     while (![characters getTopTitles]) {
         usleep(50000);
-        
-        // NSLog(@"%@",characters);
-        
     }
     
     [characters sortInAlphabeticalOrder];
@@ -221,7 +250,7 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     //return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
-    return self.tableDataFirstLetters;
+        return self.sectionIndexTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {

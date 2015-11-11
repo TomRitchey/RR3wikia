@@ -19,7 +19,7 @@
 @property NSMutableArray *thumbnails;
 @property NSMutableArray *tableData;
 @property NSMutableArray *tableDataFirstLetters;
-
+@property NSMutableArray *sectionIndexTitles;
 @property NSMutableArray *urlData;
 @property NSOperationQueue *loadingThumbnailsQueue;
 @property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
