@@ -24,13 +24,75 @@
 
     _thumbnails = [[NSMutableArray alloc]init];
     characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
+    self.tableDataFirstLetters = [[NSMutableArray alloc] init];
     
     if([self checkIfNetworkAwaliable]){
         [self downloadAndSortData];
     }else{
         [self showErrorMessage];
     }
+    ///////////    ///////////    ///////////    ///////////
     
+    NSString *currentPrefix;
+    NSMutableArray* sortedData = [[NSMutableArray alloc] init];
+    NSMutableArray* sortedThumbnails = [[NSMutableArray alloc] init];
+    NSMutableArray* sortedUrls = [[NSMutableArray alloc] init];
+    NSMutableArray* sortedThumbnailsUrls = [[NSMutableArray alloc] init];
+    
+    NSMutableArray* firstLetters = [[NSMutableArray alloc] init];
+    
+    for (int i=0;i<self.tableData.count;i++){
+        NSString *firstLetter = [[self.tableData objectAtIndex:i]substringToIndex:1];
+        if (firstLetter!=currentPrefix) {
+            [firstLetters addObject:firstLetter];
+        }
+        
+        if ([currentPrefix isEqualToString:firstLetter]) {
+            [[sortedData lastObject] addObject:[self.tableData objectAtIndex:i]];
+            [[sortedThumbnails lastObject] addObject:[self.thumbnails objectAtIndex:i]];
+            [[sortedUrls lastObject] addObject:[self.urlData objectAtIndex:i]];
+            [[sortedThumbnailsUrls lastObject] addObject:[self.thumbnailsUrls objectAtIndex:i]];
+        }
+        
+        else {
+            NSMutableArray *newArray = [[NSMutableArray alloc] initWithObjects:[self.tableData objectAtIndex:i], nil];
+            [sortedData addObject:newArray];
+            NSMutableArray *newArray1 = [[NSMutableArray alloc] initWithObjects:[self.thumbnails objectAtIndex:i], nil];
+            [sortedThumbnails addObject:newArray1];
+            NSMutableArray *newArray2 = [[NSMutableArray alloc] initWithObjects:[self.urlData objectAtIndex:i], nil];
+            [sortedUrls addObject:newArray2];
+            NSMutableArray *newArray3 = [[NSMutableArray alloc] initWithObjects:[self.thumbnailsUrls objectAtIndex:i], nil];
+            [sortedThumbnailsUrls addObject:newArray3];
+        }
+        
+        currentPrefix = firstLetter;
+    }
+    
+    ///////////    ///////////    ///////////    ///////////
+    
+    //NSLog(@"%@",firstLetters);
+    self.tableDataFirstLetters = firstLetters;
+    self.tableData = sortedData;
+    self.urlData = sortedUrls;
+    self.thumbnails = sortedThumbnails;
+    self.thumbnailsUrls = sortedThumbnailsUrls;
+    
+    self.numberOfSections = self.tableData.count;
+    self.sectionsCount = [[NSMutableArray alloc]init];
+
+    for (int i = 0; i < self.numberOfSections; i++) {
+        [self.sectionsCount addObject:[NSNumber numberWithInt:[[self.tableData objectAtIndex:i]count]]];
+        //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
+    }
+    for (int i = 0; i < self.numberOfSections; i++) {
+        for (int j = 0; j < [[self.sectionsCount objectAtIndex:i]integerValue]; j++) {
+            //NSLog(@" %i %i", i , [[self.sectionsCount objectAtIndex:j]integerValue] );
+            NSString *url = [[self.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
+    
+            [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
+        }
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,9 +110,14 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+   // [[self.thumbnails objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]
         WebViewController *controller = (WebViewController *)segue.destinationViewController;
-        controller.pageTitle = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
-        controller.url = [self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+        controller.pageTitle = [[self.tableData objectAtIndex:
+                                [[self.subTableView indexPathForSelectedRow] section]]
+    objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    controller.url = [[self.urlData objectAtIndex:
+                       [[self.subTableView indexPathForSelectedRow] section]]
+                      objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
     //NSLog(@"url: %@",[self.urlData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]]);
 }
 
@@ -81,42 +148,37 @@
     //NSLog(@"%@",[characters getTopTitles]);
     _tableData = [characters getTopTitles];
     _urlData = [characters getTopUrls];
+    _thumbnailsUrls = [characters getTopThumbnails];
     for (int i = 0; i < characters.topTitles.count; i++) {
         [_thumbnails addObject:[self genereteBlankImage]];
-    }
-    for (int i = 0; i < characters.topTitles.count; i++) {
-        __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-            //if([downloadImageOperation isCancelled]){return;}
-            
-            UIImage *image = [self downloadImageWithUrl:[[characters getTopThumbnails]objectAtIndex:i]];
-            if([downloadImageOperation isCancelled]){return;}
-            if(image!=nil && ![downloadImageOperation isCancelled]){
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if([downloadImageOperation isCancelled]){return;}
-                    [_thumbnails replaceObjectAtIndex:i withObject:image];
-                    if([downloadImageOperation isCancelled]){return;}
-                    //[self.subTableView reloadData];
-                    if ([[self.subTableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:i inSection:0]]) {
-                        [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]]
-                                                 withRowAnimation:UITableViewRowAnimationFade];
-                    }
-                });
-            }
-        }];
-        [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
     }
     [self.subTableView reloadData];
 }
 
 #pragma mark table view
 
+-(NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 0;
+}
+//
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    //NSLog(@"%i",self.numberOfSections);
+    return self.numberOfSections;
+}
+//
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_tableData count];
+    return [[self.sectionsCount objectAtIndex:section]integerValue];
+    //return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    NSString *url = [[self.thumbnailsUrls objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+//    
+//    [self downloadImage:url forIndexPath:indexPath inArray:self.thumbnails];
     static NSString *simpleTableIdentifier = @"SimpleTableItem";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -124,8 +186,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
-    cell.imageView.image = [_thumbnails objectAtIndex:indexPath.row];
-    cell.textLabel.text = [_tableData objectAtIndex:indexPath.row];
+
+    cell.textLabel.text = [[self.tableData objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    cell.imageView.image = [[self.thumbnails objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     UIImage *image = [UIImage imageNamed:@"globe_icon.png"];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -147,6 +210,70 @@
         tempImage = [UIImage imageWithData:imageData];
     }
     return tempImage;
+}
+
+#pragma mark tiny alphabet on the right
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [self.tableDataFirstLetters objectAtIndex:section];
+    
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    //return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
+    return self.tableDataFirstLetters;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+}
+
+#pragma mark other
+
+//-(void)downloadImages{
+//    for (int i = 0; i < characters.topTitles.count; i++) {
+//        __block __weak NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+//            //if([downloadImageOperation isCancelled]){return;}
+//            
+//            UIImage *image = [self downloadImageWithUrl:[[characters getTopThumbnails]objectAtIndex:i]];
+//            if([downloadImageOperation isCancelled]){return;}
+//            if(image!=nil && ![downloadImageOperation isCancelled]){
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if([downloadImageOperation isCancelled]){return;}
+//                    [_thumbnails replaceObjectAtIndex:i withObject:image];
+//                    if([downloadImageOperation isCancelled]){return;}
+//                    //[self.subTableView reloadData];
+//                    if ([[self.subTableView indexPathsForVisibleRows] containsObject:[NSIndexPath indexPathForRow:i inSection:0]]) {
+//                        [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:i inSection:0]]
+//                                                 withRowAnimation:UITableViewRowAnimationFade];
+//                    }
+//                });
+//            }
+//        }];
+//        [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
+//    }
+//}
+
+-(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
+  
+    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+        if([downloadImageOperation isCancelled]){return;}
+        UIImage *image = [self downloadImageWithUrl:url];
+        if([downloadImageOperation isCancelled]){return;}
+    if(image!=nil && ![downloadImageOperation isCancelled]){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if([downloadImageOperation isCancelled]){return;}
+                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
+                if([downloadImageOperation isCancelled]){return;}
+                [self.subTableView reloadData];
+                if ([[self.subTableView indexPathsForVisibleRows] containsObject:indexPath]) {
+                    [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                             withRowAnimation:UITableViewRowAnimationFade];
+                }
+            });
+        }
+    }];
+    [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
 }
 
 -(UIImage *)genereteBlankImage {

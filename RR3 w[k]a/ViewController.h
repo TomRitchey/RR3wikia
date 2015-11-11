@@ -15,8 +15,10 @@
 {
     JsonDataGetter *characters;
 }
+@property NSMutableArray *thumbnailsUrls;
 @property NSMutableArray *thumbnails;
 @property NSMutableArray *tableData;
+@property NSMutableArray *tableDataFirstLetters;
 
 @property NSMutableArray *urlData;
 @property NSOperationQueue *loadingThumbnailsQueue;
@@ -24,7 +26,8 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *subTableView;
 @property NSString *category;
-
+@property NSInteger numberOfSections;
+@property NSMutableArray *sectionsCount;
 
 @end
 

@@ -130,7 +130,7 @@
     //UITableViewCell *cell = [[UITableViewCell alloc]init];
     
 //    if([[self.categories objectAtIndex: indexPath.row ] isEqualToString:[NSString stringWithFormat:@"Manufacturers"]]){
-    if([self.superCategories containsObject:[self.categories objectAtIndex: indexPath.row ]]){
+    if(indexPath.row < [self.superCategories count]){
         UITableViewCell *cell = [self.masterTableView dequeueReusableCellWithIdentifier:addTableIdentifier];
         
         if (cell == nil) {
@@ -202,6 +202,9 @@
     [self.noobCategories addObject:string];
     [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
 }
+
+
+
 
 #pragma mark error message
 

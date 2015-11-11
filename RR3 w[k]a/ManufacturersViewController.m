@@ -27,7 +27,9 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
 
         ViewController *controller = (ViewController *)segue.destinationViewController;
-        controller.category = [self.tableData objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    controller.category = [[self.tableData objectAtIndex:
+                       [[self.subTableView indexPathForSelectedRow] section]]
+                      objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
     
 }
 
