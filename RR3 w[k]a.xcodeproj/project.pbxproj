@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A782DD3B1BF5FB21002E34EE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A782DD3A1BF5FB21002E34EE /* Settings.bundle */; };
 		A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79108DB1BEF7A2F00773C0E /* TableViewController.m */; };
 		A79F03231BEE72A1001F0C90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03221BEE72A1001F0C90 /* main.m */; };
 		A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03251BEE72A1001F0C90 /* AppDelegate.m */; };
@@ -21,7 +22,6 @@
 		A7ABC5C11BEFF51F00EFC623 /* ManufacturersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABC5C01BEFF51F00EFC623 /* ManufacturersViewController.m */; };
 		A7ABC5C31BEFFBEB00EFC623 /* globe_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */; };
 		A7F41DBD1BEF47570021E96D /* JsonDataGetterParent.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */; };
-		A7F7F7F01BF1FC2600F904F5 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7F7F7EF1BF1FC2600F904F5 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A782DD3A1BF5FB21002E34EE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A79108DA1BEF7A2F00773C0E /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		A79108DB1BEF7A2F00773C0E /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		A79F031E1BEE72A0001F0C90 /* RR3 w[k]a.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RR3 w[k]a.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,7 +70,6 @@
 		A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = globe_icon.png; sourceTree = "<group>"; };
 		A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataGetterParent.h; sourceTree = "<group>"; };
 		A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataGetterParent.m; sourceTree = "<group>"; };
-		A7F7F7EF1BF1FC2600F904F5 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +100,7 @@
 		A79F03151BEE72A0001F0C90 = {
 			isa = PBXGroup;
 			children = (
-				A7F7F7EF1BF1FC2600F904F5 /* Settings.bundle */,
+				A782DD3A1BF5FB21002E34EE /* Settings.bundle */,
 				A7ABC5C21BEFFBEB00EFC623 /* globe_icon.png */,
 				A79F03201BEE72A1001F0C90 /* RR3 w[k]a */,
 				A79F033A1BEE72A1001F0C90 /* RR3 w[k]aTests */,
@@ -279,7 +279,7 @@
 			files = (
 				A7ABC5C31BEFFBEB00EFC623 /* globe_icon.png in Resources */,
 				A79F03311BEE72A1001F0C90 /* LaunchScreen.storyboard in Resources */,
-				A7F7F7F01BF1FC2600F904F5 /* Settings.bundle in Resources */,
+				A782DD3B1BF5FB21002E34EE /* Settings.bundle in Resources */,
 				A79F032E1BEE72A1001F0C90 /* Assets.xcassets in Resources */,
 				A79F032C1BEE72A1001F0C90 /* Main.storyboard in Resources */,
 			);
