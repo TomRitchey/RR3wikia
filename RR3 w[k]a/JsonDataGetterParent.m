@@ -21,7 +21,7 @@
 
 
 -(void)downloadJsonData{
-    
+    //NSLog(@"%@ dasdasd",self.mainURL);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:self.mainURL];
     //NSLog(@"%@",self.mainURL);
@@ -53,5 +53,6 @@
 
 }
 
--(void)allocArrays{}
+-(void)allocArrays{
+    self.topTitles = [[NSMutableArray alloc]init];}
 @end

@@ -20,4 +20,5 @@
 -(id)initWithURL:(NSString*)stringURL withLimit:(int)limit;
 -(void)extractJsonData;
 -(void)downloadJsonData;
+-(void)allocArrays;
 @end

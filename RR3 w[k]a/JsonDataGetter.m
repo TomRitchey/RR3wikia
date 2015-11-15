@@ -49,6 +49,7 @@
     NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
     self.mainURL = [NSURL URLWithString:stringURL];
     
+    //NSLog(@"%@ dasdasd",self.mainURL);
     self.dataDownloaded = NO;
     return self;
 }
@@ -65,7 +66,7 @@
 
 
 -(void)allocArrays{
-    self.topTitles = [[NSMutableArray alloc]init];
+    [super allocArrays];
     self.topThumbnails = [[NSMutableArray alloc]init];
     self.topUrls = [[NSMutableArray alloc]init];
     

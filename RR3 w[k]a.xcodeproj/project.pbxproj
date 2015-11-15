@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A782DD3B1BF5FB21002E34EE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A782DD3A1BF5FB21002E34EE /* Settings.bundle */; };
 		A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79108DB1BEF7A2F00773C0E /* TableViewController.m */; };
+		A79EDE9D1BF89AD500B5B88B /* JsonDataExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = A79EDE9C1BF89AD500B5B88B /* JsonDataExtractor.m */; };
 		A79F03231BEE72A1001F0C90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03221BEE72A1001F0C90 /* main.m */; };
 		A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03251BEE72A1001F0C90 /* AppDelegate.m */; };
 		A79F03291BEE72A1001F0C90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79F03281BEE72A1001F0C90 /* ViewController.m */; };
@@ -45,6 +46,8 @@
 		A782DD3A1BF5FB21002E34EE /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A79108DA1BEF7A2F00773C0E /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
 		A79108DB1BEF7A2F00773C0E /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		A79EDE9B1BF89AD500B5B88B /* JsonDataExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataExtractor.h; sourceTree = "<group>"; };
+		A79EDE9C1BF89AD500B5B88B /* JsonDataExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataExtractor.m; sourceTree = "<group>"; };
 		A79F031E1BEE72A0001F0C90 /* RR3 w[k]a.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RR3 w[k]a.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79F03221BEE72A1001F0C90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A79F03241BEE72A1001F0C90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -97,6 +100,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A79EDE9E1BF89ADF00B5B88B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A79EDE9B1BF89AD500B5B88B /* JsonDataExtractor.h */,
+				A79EDE9C1BF89AD500B5B88B /* JsonDataExtractor.m */,
+				A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */,
+				A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */,
+				A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */,
+				A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		A79F03151BEE72A0001F0C90 = {
 			isa = PBXGroup;
 			children = (
@@ -122,12 +138,9 @@
 		A79F03201BEE72A1001F0C90 /* RR3 w[k]a */ = {
 			isa = PBXGroup;
 			children = (
+				A79EDE9E1BF89ADF00B5B88B /* Classes */,
 				A79F03241BEE72A1001F0C90 /* AppDelegate.h */,
 				A79F03251BEE72A1001F0C90 /* AppDelegate.m */,
-				A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */,
-				A79F03551BEE72E9001F0C90 /* JsonDataGetter.m */,
-				A7F41DBB1BEF47570021E96D /* JsonDataGetterParent.h */,
-				A7F41DBC1BEF47570021E96D /* JsonDataGetterParent.m */,
 				A79F032A1BEE72A1001F0C90 /* Main.storyboard */,
 				A7ABC5BC1BEFA42000EFC623 /* WebViewController.h */,
 				A7ABC5BD1BEFA42000EFC623 /* WebViewController.m */,
@@ -310,6 +323,7 @@
 				A7ABC5BE1BEFA42000EFC623 /* WebViewController.m in Sources */,
 				A79108DC1BEF7A2F00773C0E /* TableViewController.m in Sources */,
 				A79F03261BEE72A1001F0C90 /* AppDelegate.m in Sources */,
+				A79EDE9D1BF89AD500B5B88B /* JsonDataExtractor.m in Sources */,
 				A79F03561BEE72E9001F0C90 /* JsonDataGetter.m in Sources */,
 				A79F03231BEE72A1001F0C90 /* main.m in Sources */,
 				A7F41DBD1BEF47570021E96D /* JsonDataGetterParent.m in Sources */,
