@@ -133,7 +133,7 @@
     _urlData = [characters getTopUrls];
     _thumbnailsUrls = [characters getTopThumbnails];
     for (int i = 0; i < characters.topTitles.count; i++) {
-        [_thumbnails addObject:[self genereteBlankImage]];
+        [_thumbnails addObject:[JsonDataExtractor genereteBlankImage]];
     }
     //[self.subTableView reloadData];
 }
@@ -159,7 +159,7 @@
 -(UIImage *)downloadImageWithUrl:(NSString *)url{
     UIImage *tempImage;
     if(url == [NSNull null]){
-        tempImage = [self genereteBlankImage];
+        tempImage = [JsonDataExtractor genereteBlankImage];
     }else{
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         tempImage = [UIImage imageWithData:imageData];
@@ -168,7 +168,7 @@
 }
 
 
--(UIImage *)genereteBlankImage {
++(UIImage *)genereteBlankImage {
     
     CGSize size = CGSizeMake(200, 200);
     UIGraphicsBeginImageContextWithOptions(size, YES, 0);

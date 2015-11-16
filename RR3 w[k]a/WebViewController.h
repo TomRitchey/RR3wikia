@@ -18,6 +18,6 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 
-@property bool allowLoad;
+@property BOOL allowLoad;
 
 @end

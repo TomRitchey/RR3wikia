@@ -37,7 +37,6 @@
     self.thumbnails = charactersExtracted.thumbnails;
     for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
         for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
-            //NSLog(@" %i %i", i , [[self.sectionsCount objectAtIndex:j]integerValue] );
             NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
             
             [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
@@ -55,7 +54,6 @@
     
     if (self.isMovingFromParentViewController || self.isBeingDismissed) {
         [self.loadingThumbnailsQueue cancelAllOperations];
-        //NSLog(@"bye bye");
     }
 }
 
@@ -90,28 +88,19 @@
 -(NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 0;
 }
-//
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
-//  NSLog(@"%i",charactersExtracted.numberOfSections);
     return charactersExtracted.numberOfSections;
-    //return self.numberOfSections;
 }
-//
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
     return [[charactersExtracted.sectionsCount objectAtIndex:section]integerValue];
-    //return [[self.sectionsCount objectAtIndex:section]integerValue];
-    //return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSString *url = [[self.thumbnailsUrls objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-//    
-//    [self downloadImage:url forIndexPath:indexPath inArray:self.thumbnails];
     static NSString *simpleTableIdentifier = @"SimpleTableItem";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -137,7 +126,7 @@
 -(UIImage *)downloadImageWithUrl:(NSString *)url{
     UIImage *tempImage;
     if(url == [NSNull null]){
-        tempImage = [self genereteBlankImage];
+        tempImage = [JsonDataExtractor genereteBlankImage];
     }else{
         NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         tempImage = [UIImage imageWithData:imageData];
@@ -149,14 +138,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [charactersExtracted.tableDataFirstLetters objectAtIndex:section];
-    return [self.tableDataFirstLetters objectAtIndex:section];
-    
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    //return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
     return charactersExtracted.sectionIndexTitles;
-        return self.sectionIndexTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
@@ -185,22 +170,6 @@
         }
     }];
     [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
-}
-
--(UIImage *)genereteBlankImage {
-    
-    CGSize size = CGSizeMake(200, 200);
-    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
-    CGFloat red = arc4random_uniform(255) / 255.0;
-    CGFloat green = arc4random_uniform(255) / 255.0;
-    CGFloat blue = arc4random_uniform(255) / 255.0;
-    
-    [[UIColor colorWithRed:red green:green blue:blue alpha:1.0] setFill];
-    UIRectFill(CGRectMake(0, 0, size.width, size.height));
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
 }
 
 #pragma mark alert messages

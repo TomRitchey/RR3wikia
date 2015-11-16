@@ -28,4 +28,5 @@
 -(void)downloadAndSortData;
 -(void)preparation;
 -(id)initWithCategory:(NSString*)category;
++(UIImage *)genereteBlankImage;
 @end
