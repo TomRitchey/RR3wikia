@@ -42,9 +42,9 @@
 
 -(void)preparation{
     
-    self.category = [self replaceCharacters:self.category];
+    //self.category = [self replaceCharacters:self.category];
     _thumbnails = [[NSMutableArray alloc]init];
-    self.characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
+    self.characters = [[JsonDataGetter alloc] initWithCategory:[self replaceCharacters:self.category] withLimit:200];
     self.tableDataFirstLetters = [[NSMutableArray alloc] init];
     
     [self.characters downloadJsonData];
@@ -137,6 +137,7 @@
     self.sectionsCount = [[NSMutableArray alloc]init];
     
     self.sectionIndexTitles = [[NSMutableArray alloc] initWithArray:self.tableDataFirstLetters];
+    NSLog(@"%@",self.category);
     if ([[self.sectionIndexTitles objectAtIndex:0]isEqualToString:self.category]) {
         [self.sectionIndexTitles replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"★"]];
     }
@@ -202,7 +203,7 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
-- (NSString *)replaceCharacters:(NSString *)string{
+-(NSString *)replaceCharacters:(NSString *)string{
     
     string = [string stringByReplacingOccurrencesOfString:@" "
                                                withString:@"_"];
