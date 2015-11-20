@@ -63,7 +63,9 @@
     self.dataDownloaded = NO;
     return self;
 }
-
+-(void)dealloc{
+    [self removeObserver:self forKeyPath:@"self.dataDownloaded"];
+}
 
 -(void)allocArrays{
     [super allocArrays];
@@ -73,16 +75,20 @@
 }
 
 -(void)downloadJsonData{
+     //NSLog(@" self data = %hhd",self.dataDownloaded);
+    [self addObserver:self forKeyPath:@"self.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
     [super downloadJsonData];
-    [self extractJsonData];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"self.dataDownloaded"]&& self.dataDownloaded == YES) {
+        //NSLog(@" self data = %hhd",self.dataDownloaded);
+        [self extractJsonData];
+    }
 }
 
 -(void)extractJsonData{
     
-    while(!self.jsonData){
-        usleep(200000);
-        //NSLog(@"%@",self.jsonData);
-    }
     [super extractJsonData];
     if (self.topThumbnails.count != 0){
         [self.topThumbnails removeAllObjects];

@@ -33,14 +33,13 @@
         }else{
             self.jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         }
+        self.dataDownloaded = YES;
+        //NSLog(@"downloaded");
     }] resume];
-    self.dataDownloaded = YES;
 }
 
 -(void)extractJsonData{
-    while(!self.jsonData){
-        usleep(200000);
-    }
+
     if (self.topTitles.count != 0){
         [self.topTitles removeAllObjects];
     }

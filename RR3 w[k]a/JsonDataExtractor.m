@@ -14,19 +14,55 @@
     if (!(self = [super init]))
     {return nil;}
     self.category = category;
+    self.dataExtracted = NO;
+    
+    [self addObserver:self forKeyPath:@"self.characters.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
     return self;
+    
+}
+- (void)dealloc{
+    @try{
+        [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
+    }@catch(id anException){
+        NSLog(@" no observer ");
+    }
+    NSLog(@" ex dealloced ");
+
+}
+
+-(void)removeObservers{
+    [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"self.characters.dataDownloaded"]&& self.characters.dataDownloaded == YES) {
+        //NSLog(@"ex self data = %hhd",self.characters.dataDownloaded);
+     
+        [self downloadAndSortData];
+    }
 }
 
 -(void)preparation{
     
     self.category = [self replaceCharacters:self.category];
     _thumbnails = [[NSMutableArray alloc]init];
-    characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
+    self.characters = [[JsonDataGetter alloc] initWithCategory:self.category withLimit:200];
     self.tableDataFirstLetters = [[NSMutableArray alloc] init];
     
-    [self downloadAndSortData];
+    [self.characters downloadJsonData];
     
     ///////////    ///////////    ///////////    ///////////
+
+}
+-(void)downloadAndSortData{
+
+    [self.characters sortInAlphabeticalOrder];
+    //NSLog(@"%@",[characters getTopTitles]);
+    _tableData = [self.characters getTopTitles];
+    _urlData = [self.characters getTopUrls];
+    _thumbnailsUrls = [self.characters getTopThumbnails];
+    for (int i = 0; i < self.characters.topTitles.count; i++) {
+        [_thumbnails addObject:[JsonDataExtractor genereteBlankImage]];
+    }
     
     NSString *currentPrefix;
     NSMutableArray* sortedData = [[NSMutableArray alloc] init];
@@ -119,30 +155,14 @@
             [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
         }
     }
-}
--(void)downloadAndSortData{
-    [characters downloadJsonData];
-    // NSLog(@"%@",self.category);
-    while (![characters getTopTitles]) {
-        usleep(50000);
-    }
-    
-    [characters sortInAlphabeticalOrder];
-    //NSLog(@"%@",[characters getTopTitles]);
-    _tableData = [characters getTopTitles];
-    _urlData = [characters getTopUrls];
-    _thumbnailsUrls = [characters getTopThumbnails];
-    for (int i = 0; i < characters.topTitles.count; i++) {
-        [_thumbnails addObject:[JsonDataExtractor genereteBlankImage]];
-    }
-    //[self.subTableView reloadData];
+    self.dataExtracted = YES;
 }
 
 -(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
     
     __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
         if([downloadImageOperation isCancelled]){return;}
-        UIImage *image = [self downloadImageWithUrl:url];
+        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
         if([downloadImageOperation isCancelled]){return;}
         if(image!=nil && ![downloadImageOperation isCancelled]){
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -156,7 +176,7 @@
 }
 
 
--(UIImage *)downloadImageWithUrl:(NSString *)url{
++(UIImage *)downloadImageWithUrl:(NSString *)url{
     UIImage *tempImage;
     if(url == [NSNull null]){
         tempImage = [JsonDataExtractor genereteBlankImage];

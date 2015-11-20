@@ -94,32 +94,17 @@
 
 #pragma mark handling bottom bar buttons
 
-//- (IBAction)rewindButtonPressed:(id)sender {
-//    [self.webView stopLoading];
-//    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
-//    
-//    NSURL *url = [NSURL URLWithString:urlWithHeight ];
-//    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-//    [self.webView loadRequest:requestObj];
-//}
+
 - (IBAction)backButtonPressed:(id)sender {
     if ([self.webView canGoBack]){
         [self.webView goBack];
     }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        usleep(2000000);
-//        [self navigationButtonsColors];
-//    });
 }
 - (IBAction)forwardButtonPressed:(id)sender {
     //NSLog(@"%d",self.webView.canGoForward);
     if ([self.webView canGoForward]){
         [self.webView goForward];
     }
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        usleep(2500000);
-//        [self navigationButtonsColors];
-//    });
 }
 
 - (void)navigationButtonsColors{

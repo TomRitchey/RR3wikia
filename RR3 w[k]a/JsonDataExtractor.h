@@ -11,9 +11,9 @@
 #include "JsonDataGetter.h"
 
 @interface JsonDataExtractor : NSObject
-{
-    JsonDataGetter *characters;
-}
+
+@property JsonDataGetter *characters;
+
 @property NSMutableArray *thumbnailsUrls;
 @property NSMutableArray *thumbnails;
 @property NSMutableArray *tableData;
@@ -24,9 +24,12 @@
 @property NSString *category;
 @property NSInteger numberOfSections;
 @property NSMutableArray *sectionsCount;
+@property BOOL dataExtracted;
 
 -(void)downloadAndSortData;
 -(void)preparation;
 -(id)initWithCategory:(NSString*)category;
 +(UIImage *)genereteBlankImage;
++(UIImage *)downloadImageWithUrl:(NSString *)url;
+-(void)removeObservers;
 @end
