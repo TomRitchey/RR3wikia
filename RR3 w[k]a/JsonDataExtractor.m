@@ -23,11 +23,10 @@
 - (void)dealloc{
     @try{
         [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
+        NSLog(@" observer removed ");
     }@catch(id anException){
         NSLog(@" no observer ");
     }
-    NSLog(@" ex dealloced ");
-
 }
 
 -(void)removeObservers{

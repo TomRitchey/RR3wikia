@@ -38,6 +38,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    NSLog(@"mem warning");
     // Dispose of any resources that can be recreated.
 }
 
@@ -48,8 +49,13 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [charactersExtracted removeObservers];
-    //[self removeObserver:self forKeyPath:@"charactersExtracted.dataExtracted"];
+    //[charactersExtracted removeObservers];
+    @try {
+        [self removeObserver:self forKeyPath:@"charactersExtracted.dataExtracted"];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"no observer");
+    }
     if (self.isMovingFromParentViewController || self.isBeingDismissed) {
         [self.loadingThumbnailsQueue cancelAllOperations];
     }
@@ -57,6 +63,7 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
     if([keyPath isEqualToString:@"charactersExtracted.dataExtracted"]&& charactersExtracted.dataExtracted == YES) {
         //NSLog(@" self data = %hhd",charactersExtracted.characters.dataDownloaded);
         self.thumbnails = charactersExtracted.thumbnails;
