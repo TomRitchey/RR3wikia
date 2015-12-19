@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-               BuildableName = "RR3 w[k]a.app"
-               BlueprintName = "RR3 w[k]a"
-               ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+               BuildableName = "RR3wikia.app"
+               BlueprintName = "RR3wikia"
+               ReferencedContainer = "container:RR3wikia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A79F03361BEE72A1001F0C90"
-               BuildableName = "RR3 w[k]aTests.xctest"
-               BlueprintName = "RR3 w[k]aTests"
-               ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+               BuildableName = "RR3wikiaTests.xctest"
+               BlueprintName = "RR3wikiaTests"
+               ReferencedContainer = "container:RR3wikia.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A79F03411BEE72A1001F0C90"
-               BuildableName = "RR3 w[k]aUITests.xctest"
-               BlueprintName = "RR3 w[k]aUITests"
-               ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+               BuildableName = "RR3wikiaUITests.xctest"
+               BlueprintName = "RR3wikiaUITests"
+               ReferencedContainer = "container:RR3wikia.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -53,9 +53,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3 w[k]a.app"
-            BlueprintName = "RR3 w[k]a"
-            ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+            BuildableName = "RR3wikia.app"
+            BlueprintName = "RR3wikia"
+            ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,9 +76,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3 w[k]a.app"
-            BlueprintName = "RR3 w[k]a"
-            ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+            BuildableName = "RR3wikia.app"
+            BlueprintName = "RR3wikia"
+            ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3 w[k]a.app"
-            BlueprintName = "RR3 w[k]a"
-            ReferencedContainer = "container:RR3 w[k]a.xcodeproj">
+            BuildableName = "RR3wikia.app"
+            BlueprintName = "RR3wikia"
+            ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
