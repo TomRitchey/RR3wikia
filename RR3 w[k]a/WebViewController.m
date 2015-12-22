@@ -15,14 +15,13 @@
 }
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 
-
 @end
 @implementation WebViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _webView.scrollView.delegate = self;
     
-   
     [self.forwardButton setTintColor:[UIColor grayColor]];
     [self.backButton
      setTintColor:[UIColor grayColor]];
@@ -128,18 +127,36 @@
     }
 }
 //add pan gesture recognizer in storyboard
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    
-    if(translation.y > 0)
-    {
-        NSLog(@"Drag down");
-    } else
-    {
-        NSLog(@"Drag up");
-    }
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    _currentToolbarFrame = self.toolbar.frame;
 }
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+   [UIView animateWithDuration:1 animations:^{
+        self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
+   }];
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    UIToolbar* tb = self.toolbar;
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    CGFloat screenHeight = screenRect.size.height;
+    CGFloat yToolbarFrame = screenRect.size.height - tb.frame.size.height;
+
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+
+    if (_currentToolbarFrame.origin.y - translation.y <= screenHeight
+        && _currentToolbarFrame.origin.y  - translation.y
+        >= yToolbarFrame
+        && !self.toolbar.isHidden) {
+        tb.frame = CGRectMake(tb.frame.origin.x,
+                               _currentToolbarFrame.origin.y - translation.y, tb.frame.size.width, tb.frame.size.height);
+    }
+   
+}
+
 
 /*
 #pragma mark - Navigation
