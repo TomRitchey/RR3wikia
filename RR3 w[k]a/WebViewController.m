@@ -133,18 +133,23 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     UIToolbar* tb = self.toolbar;
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+    
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
     CGFloat yToolbarFrame = screenRect.size.height - tb.frame.size.height;
-    if (screenHeight - tb.frame.origin.y < tb.frame.origin.y - yToolbarFrame) {
+    
+    //NSLog(@"translation %f", translation.y);
+    
+    if (screenHeight - tb.frame.origin.y > tb.frame.origin.y - yToolbarFrame && translation.y > 0) {
         
         [UIView animateWithDuration:0.4 animations:^{
-            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
+            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
         }];
         
     }else{
         [UIView animateWithDuration:0.4 animations:^{
-            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
+            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
         }];
     }
     
@@ -154,7 +159,7 @@
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView{
     CGRect screenRect = [[UIScreen mainScreen] bounds];
-   [UIView animateWithDuration:0.7 animations:^{
+   [UIView animateWithDuration:0.4 animations:^{
         self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
    }];
 }
@@ -174,7 +179,8 @@
         && !self.toolbar.isHidden) {
         tb.frame = CGRectMake(tb.frame.origin.x,
                                _currentToolbarFrame.origin.y - translation.y, tb.frame.size.width, tb.frame.size.height);
-    }
+            }
+
    
 }
 
