@@ -136,11 +136,12 @@
                                     <constraint firstAttribute="height" constant="44" id="Htv-5G-5zN"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Back" width="102" id="DT8-cV-koe">
+                                    <barButtonItem title="Back" width="69" id="DT8-cV-koe">
                                         <connections>
                                             <action selector="backButtonPressed:" destination="CtE-51-1nB" id="51b-OI-AY1"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem systemItem="flexibleSpace" id="K9J-0R-AtV"/>
                                     <barButtonItem title="Forward" width="86" id="Wwp-tD-GYr">
                                         <connections>
                                             <action selector="forwardButtonPressed:" destination="CtE-51-1nB" id="oKB-84-OJw"/>

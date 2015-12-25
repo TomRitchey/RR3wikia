@@ -28,6 +28,9 @@
         NSLog(@" no observer ");
     }
 }
+-(void)masterViewControllerRemoved{
+   // [self.characters dealloc];
+}
 
 -(void)removeObservers{
     [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
@@ -147,33 +150,33 @@
         [self.sectionsCount addObject:[NSNumber numberWithInt:[[self.tableData objectAtIndex:i]count]]];
         //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
     }
-    for (int i = 0; i < self.numberOfSections; i++) {
-        for (int j = 0; j < [[self.sectionsCount objectAtIndex:i]integerValue]; j++) {
-            //NSLog(@" %i %i", i , [[self.sectionsCount objectAtIndex:j]integerValue] );
-            NSString *url = [[self.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
-            
-            [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
-        }
-    }
+//    for (int i = 0; i < self.numberOfSections; i++) {
+//        for (int j = 0; j < [[self.sectionsCount objectAtIndex:i]integerValue]; j++) {
+//            //NSLog(@" %i %i", i , [[self.sectionsCount objectAtIndex:j]integerValue] );
+//            NSString *url = [[self.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
+//            
+//            [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
+//        }
+//    }
     self.dataExtracted = YES;
 }
-
--(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
-    
-    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-        if([downloadImageOperation isCancelled]){return;}
-        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
-        if([downloadImageOperation isCancelled]){return;}
-        if(image!=nil && ![downloadImageOperation isCancelled]){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if([downloadImageOperation isCancelled]){return;}
-                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
-                if([downloadImageOperation isCancelled]){return;}
-            });
-        }
-    }];
-    [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
-}
+//function not in use
+//-(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
+//    
+//    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+//        if([downloadImageOperation isCancelled]){return;}
+//        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
+//        if([downloadImageOperation isCancelled]){return;}
+//        if(image!=nil && ![downloadImageOperation isCancelled]){
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if([downloadImageOperation isCancelled]){return;}
+//                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
+//                if([downloadImageOperation isCancelled]){return;}
+//            });
+//        }
+//    }];
+//    [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
+//}
 
 
 +(UIImage *)downloadImageWithUrl:(NSString *)url{

@@ -26,6 +26,7 @@
 @property NSMutableArray *sectionsCount;
 @property BOOL dataExtracted;
 
+-(void)masterViewControllerRemoved;
 -(void)downloadAndSortData;
 -(void)preparation;
 -(id)initWithCategory:(NSString*)category;

@@ -126,50 +126,39 @@
         [self.toolbar setHidden:NO];
     }
 }
+
+# pragma mark scrolling behaviour
+
 //add pan gesture recognizer in storyboard
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     _currentToolbarFrame = self.toolbar.frame;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    UIToolbar* tb = self.toolbar;
+
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
-    CGFloat yToolbarFrame = screenRect.size.height - tb.frame.size.height;
+    CGFloat yToolbarFrame = screenRect.size.height - self.toolbar.frame.size.height;
     
     //NSLog(@"translation %f", translation.y);
     
-    if (screenHeight - tb.frame.origin.y > tb.frame.origin.y - yToolbarFrame && translation.y > 0) {
-        
-        [UIView animateWithDuration:0.4 animations:^{
-            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
-        }];
-        
-    }else{
-        [UIView animateWithDuration:0.4 animations:^{
-            self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
-        }];
-    }
-    
-    
+    if (screenHeight - self.toolbar.frame.origin.y > self.toolbar.frame.origin.y - yToolbarFrame && translation.y > 0) {
+                [self showToolBar];
+        }else{  [self hideToolbar];  }
     
 }
 
+
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView{
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-   [UIView animateWithDuration:0.4 animations:^{
-        self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
-   }];
+    [self showToolBar];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
-    UIToolbar* tb = self.toolbar;
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenHeight = screenRect.size.height;
-    CGFloat yToolbarFrame = screenRect.size.height - tb.frame.size.height;
+    CGFloat yToolbarFrame = screenRect.size.height - self.toolbar.frame.size.height;
 
     CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
 
@@ -177,14 +166,37 @@
         && _currentToolbarFrame.origin.y  - translation.y
         >= yToolbarFrame
         && !self.toolbar.isHidden) {
-        tb.frame = CGRectMake(tb.frame.origin.x,
-                               _currentToolbarFrame.origin.y - translation.y, tb.frame.size.width, tb.frame.size.height);
-            }
+                [self moveToolbar:self.toolbar withTranslation:translation];
+    }
 
-   
 }
 
+#pragma mark toolbar behaviour
 
+-(void)moveToolbar:(UIToolbar*)tb withTranslation:(CGPoint)translation{
+    tb.frame = CGRectMake(tb.frame.origin.x,
+                          _currentToolbarFrame.origin.y - translation.y, tb.frame.size.width, tb.frame.size.height);
+}
+
+-(void)hideToolbar{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    [UIView animateWithDuration:0.2 animations:^{
+        self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
+    }];
+}
+
+-(void)showToolBar{
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
+    [UIView animateWithDuration:0.2 animations:^{
+        self.toolbar.frame = CGRectMake(self.toolbar.frame.origin.x, screenRect.size.height - self.toolbar.frame.size.height,self.toolbar.frame.size.width,self.toolbar.frame.size.height);
+    }];
+}
+
+#pragma mark - allert long press
+
+-(void)addToAllertController{
+    
+}
 /*
 #pragma mark - Navigation
 

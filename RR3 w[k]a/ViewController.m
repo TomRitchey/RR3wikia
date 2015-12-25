@@ -50,6 +50,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //[charactersExtracted removeObservers];
+    [charactersExtracted masterViewControllerRemoved];
     @try {
         [self removeObserver:self forKeyPath:@"charactersExtracted.dataExtracted"];
     }
@@ -75,7 +76,7 @@
                 [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
             }
         }
-        
+        [self.tableView reloadData];
         //NSLog(@"downloaded %@ " , charactersExtracted.tableData);
     }
 }
