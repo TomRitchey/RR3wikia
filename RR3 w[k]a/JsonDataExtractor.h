@@ -20,7 +20,7 @@
 @property NSMutableArray *tableDataFirstLetters;
 @property NSMutableArray *sectionIndexTitles;
 @property NSMutableArray *urlData;
-@property NSOperationQueue *loadingThumbnailsQueue;
+@property NSOperationQueue *loadingQueue;
 @property NSString *category;
 @property NSInteger numberOfSections;
 @property NSMutableArray *sectionsCount;

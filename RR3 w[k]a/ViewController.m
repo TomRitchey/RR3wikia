@@ -9,7 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-
+@property (nonatomic, copy) NSArray *previousNavStack;
 @end
 
 @implementation ViewController
@@ -17,8 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      //NSLog(@"will load");
+    
     charactersExtracted = [[JsonDataExtractor alloc] initWithCategory:self.category];
     [self addObserver:self forKeyPath:@"charactersExtracted.dataExtracted" options:NSKeyValueObservingOptionOld context:NULL];
+    
 //    NSLog(@"%@",[self class]);
     
     self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
@@ -29,9 +31,12 @@
     
     if([self checkIfNetworkAwaliable]){
         //[self downloadAndSortData];
-        [charactersExtracted preparation];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^{
+            [charactersExtracted preparation];
+        });
     }else{
-        [self showErrorMessage];
+            [self showErrorMessage];
     }
     ///////////    ///////////    ///////////    ///////////
 }
@@ -47,6 +52,19 @@
 //    NSLog(@"added");
 //}
 
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    //viewWillAppear: and viewWillDisappear: are not called by navigationController
+    // when a view controller is pushed on or popped off the stack.
+    // Therefore, we have to do it manually.
+    if ([self.previousNavStack count] > 0) //will be empty at launch
+        [[self.previousNavStack lastObject] viewWillDisappear:animated];
+    [[navigationController.viewControllers lastObject] viewWillAppear:animated];
+    self.previousNavStack = navigationController.viewControllers;
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     //[charactersExtracted removeObservers];
@@ -57,11 +75,20 @@
     @catch (NSException *exception) {
         NSLog(@"no observer");
     }
-    if (self.isMovingFromParentViewController || self.isBeingDismissed) {
-        [self.loadingThumbnailsQueue cancelAllOperations];
+    if (self.isMovingToParentViewController || self.isBeingDismissed) {
+         NSLog(@"bye");
+       // [self.loadingThumbnailsQueue cancelAllOperations];
     }
-   // NSLog(@"removes");
+    //NSLog(@"bye 0");
+    [self.loadingThumbnailsQueue cancelAllOperations];
+    [charactersExtracted masterViewControllerRemoved];
+   
 }
+
+//- (void)willMoveToParentViewController:(UIViewController *)parent{
+//    [super willMoveToParentViewController:parent];
+//    NSLog(@"bye 1");
+//}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
@@ -69,13 +96,22 @@
         //NSLog(@" self data = %hhd",charactersExtracted.characters.dataDownloaded);
         self.thumbnails = charactersExtracted.thumbnails;
         [self.tableView reloadData];
+        
+        
+       // __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+        
         for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
+                    // if([downloadImageOperation isCancelled]){return;}
+                     [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
                 
-                [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
             }
         }
+        //}];
+        
+        //[self.loadingThumbnailsQueue addOperation:downloadImageOperation];
+        
         [self.tableView reloadData];
         //NSLog(@"downloaded %@ " , charactersExtracted.tableData);
     }
@@ -159,16 +195,18 @@
     return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
 }
 
-#pragma images
+#pragma mark images
 
 -(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
   
     __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
         if([downloadImageOperation isCancelled]){return;}
         UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
+        //NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         if([downloadImageOperation isCancelled]){return;}
     if(image!=nil && ![downloadImageOperation isCancelled]){
             dispatch_async(dispatch_get_main_queue(), ^{
+                //UIImage* image = [UIImage imageWithData:imageData];
                 if([downloadImageOperation isCancelled]){return;}
                 [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
                 if([downloadImageOperation isCancelled]){return;}

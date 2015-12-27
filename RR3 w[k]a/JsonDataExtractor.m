@@ -13,9 +13,10 @@
 -(id)initWithCategory:(NSString*)category{
     if (!(self = [super init]))
     {return nil;}
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.category = category;
     self.dataExtracted = NO;
-    
+    _loadingQueue = [[NSOperationQueue alloc] init];
     [self addObserver:self forKeyPath:@"self.characters.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
     return self;
     
@@ -30,15 +31,18 @@
 }
 -(void)masterViewControllerRemoved{
    // [self.characters dealloc];
+    [self.loadingQueue cancelAllOperations];
+    //NSLog(@"cancelec");
 }
 
 -(void)removeObservers{
     [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
 }
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if([keyPath isEqualToString:@"self.characters.dataDownloaded"]&& self.characters.dataDownloaded == YES) {
         //NSLog(@"ex self data = %hhd",self.characters.dataDownloaded);
-     
+        //NSLog(@"Json  is here");
         [self downloadAndSortData];
     }
 }
@@ -56,7 +60,9 @@
 
 }
 -(void)downloadAndSortData{
-
+__block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+    
+    
     [self.characters sortInAlphabeticalOrder];
     //NSLog(@"%@",[characters getTopTitles]);
     _tableData = [self.characters getTopTitles];
@@ -65,6 +71,8 @@
     for (int i = 0; i < self.characters.topTitles.count; i++) {
         [_thumbnails addObject:[JsonDataExtractor genereteBlankImage]];
     }
+    
+    if([downloadDataOperation isCancelled]) return;
     
     NSString *currentPrefix;
     NSMutableArray* sortedData = [[NSMutableArray alloc] init];
@@ -77,6 +85,8 @@
     bool firstTime = YES;
     for (int i=0;i<self.tableData.count;i++){
         NSString *firstLetter = [[self.tableData objectAtIndex:i]substringToIndex:1];
+        
+        if([downloadDataOperation isCancelled]) return;
         
         if([[self.tableData objectAtIndex:i] containsString:self.category]){
             //NSLog(@"%@  category %@",[self.tableData objectAtIndex:i], self.category);
@@ -130,6 +140,8 @@
     
     //NSLog(@"%@",firstLetters);
     
+    if([downloadDataOperation isCancelled]) return;
+    
     self.tableDataFirstLetters = firstLetters;
     self.tableData = sortedData;
     self.urlData = sortedUrls;
@@ -146,6 +158,8 @@
     }
     
     
+    if([downloadDataOperation isCancelled]) return;
+    
     for (int i = 0; i < self.numberOfSections; i++) {
         [self.sectionsCount addObject:[NSNumber numberWithInt:[[self.tableData objectAtIndex:i]count]]];
         //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
@@ -159,6 +173,8 @@
 //        }
 //    }
     self.dataExtracted = YES;
+    }];
+    [_loadingQueue addOperation:downloadDataOperation];
 }
 //function not in use
 //-(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
