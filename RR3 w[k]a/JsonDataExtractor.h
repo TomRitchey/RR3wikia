@@ -32,5 +32,6 @@
 -(id)initWithCategory:(NSString*)category;
 +(UIImage *)genereteBlankImage;
 +(UIImage *)downloadImageWithUrl:(NSString *)url;
++(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array inOperationQueue:(NSOperationQueue*)operationQueue;
 -(void)removeObservers;
 @end

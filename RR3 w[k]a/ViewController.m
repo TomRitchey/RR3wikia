@@ -26,15 +26,15 @@
     self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
     self.navigationItem.title  = self.category;
     self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
+    self.loadingDataQueue = [[NSOperationQueue alloc] init];
 
     _thumbnails = [[NSMutableArray alloc]init];
     
     if([self checkIfNetworkAwaliable]){
-        //[self downloadAndSortData];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^{
-            [charactersExtracted preparation];
-        });
+        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+            [charactersExtracted preparation];}];
+        [self.loadingDataQueue addOperation:downloadDataOperation];
+       
     }else{
             [self showErrorMessage];
     }
@@ -47,23 +47,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-//-(void)viewDidAppear:(BOOL)animated{
-//    //[self addObserver:self forKeyPath:@"charactersExtracted.dataExtracted" options:NSKeyValueObservingOptionOld context:NULL];
-//    NSLog(@"added");
-//}
-
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(UIViewController *)viewController
-                    animated:(BOOL)animated
-{
-    //viewWillAppear: and viewWillDisappear: are not called by navigationController
-    // when a view controller is pushed on or popped off the stack.
-    // Therefore, we have to do it manually.
-    if ([self.previousNavStack count] > 0) //will be empty at launch
-        [[self.previousNavStack lastObject] viewWillDisappear:animated];
-    [[navigationController.viewControllers lastObject] viewWillAppear:animated];
-    self.previousNavStack = navigationController.viewControllers;
-}
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -80,40 +63,35 @@
        // [self.loadingThumbnailsQueue cancelAllOperations];
     }
     //NSLog(@"bye 0");
+    [self.loadingDataQueue cancelAllOperations];
     [self.loadingThumbnailsQueue cancelAllOperations];
     [charactersExtracted masterViewControllerRemoved];
    
 }
 
-//- (void)willMoveToParentViewController:(UIViewController *)parent{
-//    [super willMoveToParentViewController:parent];
-//    NSLog(@"bye 1");
-//}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if([keyPath isEqualToString:@"charactersExtracted.dataExtracted"]&& charactersExtracted.dataExtracted == YES) {
-        //NSLog(@" self data = %hhd",charactersExtracted.characters.dataDownloaded);
+        //NSLog(@"downloaded");
+        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+            
+        
         self.thumbnails = charactersExtracted.thumbnails;
         [self.tableView reloadData];
         
-        
-       // __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-        
         for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
+                if([downloadDataOperation isCancelled]){return;}
+                
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
                     // if([downloadImageOperation isCancelled]){return;}
                      [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
                 
             }
         }
-        //}];
-        
-        //[self.loadingThumbnailsQueue addOperation:downloadImageOperation];
-        
         [self.tableView reloadData];
-        //NSLog(@"downloaded %@ " , charactersExtracted.tableData);
+        }];
+        [self.loadingDataQueue addOperation:downloadDataOperation];
     }
 }
 

@@ -24,6 +24,7 @@
 @property NSMutableArray *sectionIndexTitles;
 @property NSMutableArray *urlData;
 @property NSOperationQueue *loadingThumbnailsQueue;
+@property NSOperationQueue *loadingDataQueue;
 @property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @property (strong, nonatomic) IBOutlet UITableView *subTableView;
