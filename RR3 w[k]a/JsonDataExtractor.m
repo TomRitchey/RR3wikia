@@ -16,8 +16,10 @@
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.category = category;
     self.dataExtracted = NO;
-    _loadingQueue = [[NSOperationQueue alloc] init];
+    //_loadingQueue = [[NSOperationQueue alloc] init];
     [self addObserver:self forKeyPath:@"self.characters.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
+    
+    self.loadingDataQueue = [[NSOperationQueue alloc] init];
     return self;
     
 }
@@ -31,7 +33,7 @@
 }
 -(void)masterViewControllerRemoved{
    // [self.characters dealloc];
-    [self.loadingQueue cancelAllOperations];
+    [self.loadingDataQueue cancelAllOperations];
     //NSLog(@"cancelec");
 }
 
@@ -43,7 +45,12 @@
     if([keyPath isEqualToString:@"self.characters.dataDownloaded"]&& self.characters.dataDownloaded == YES) {
         //NSLog(@"ex self data = %hhd",self.characters.dataDownloaded);
         //NSLog(@"Json  is here");
-        [self downloadAndSortData];
+        
+        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+            
+            [self downloadAndSortData];
+            }];
+        [self.loadingDataQueue addOperation:downloadDataOperation];
     }
 }
 
@@ -54,14 +61,16 @@
     self.characters = [[JsonDataGetter alloc] initWithCategory:[self replaceCharacters:self.category] withLimit:200];
     self.tableDataFirstLetters = [[NSMutableArray alloc] init];
     
-    [self.characters downloadJsonData];
-    
+    __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+        [self.characters downloadJsonData];
+    }];
+    [self.loadingDataQueue addOperation:downloadDataOperation];
     ///////////    ///////////    ///////////    ///////////
 
 }
 -(void)downloadAndSortData{
 //__block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
-    dispatch_async(dispatch_get_main_queue(), ^{
+    //dispatch_async(dispatch_get_main_queue(), ^{
     
     [self.characters sortInAlphabeticalOrder];
     //NSLog(@"%@",[characters getTopTitles]);
@@ -166,27 +175,27 @@
     }
 
     self.dataExtracted = YES;
-        });
+        //});
    // }];
    // [_loadingQueue addOperation:downloadDataOperation];
 }
 //function not in use
-+(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array inOperationQueue:(NSOperationQueue*)operationQueue{
-    
-    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-        if([downloadImageOperation isCancelled]){return;}
-        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
-        if([downloadImageOperation isCancelled]){return;}
-        if(image!=nil && ![downloadImageOperation isCancelled]){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if([downloadImageOperation isCancelled]){return;}
-                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
-                if([downloadImageOperation isCancelled]){return;}
-            });
-        }
-    }];
-    [operationQueue addOperation:downloadImageOperation];
-}
+//+(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array inOperationQueue:(NSOperationQueue*)operationQueue{
+//    
+//    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
+//        if([downloadImageOperation isCancelled]){return;}
+//        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
+//        if([downloadImageOperation isCancelled]){return;}
+//        if(image!=nil && ![downloadImageOperation isCancelled]){
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if([downloadImageOperation isCancelled]){return;}
+//                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
+//                if([downloadImageOperation isCancelled]){return;}
+//            });
+//        }
+//    }];
+//    [operationQueue addOperation:downloadImageOperation];
+//}
 
 
 +(UIImage *)downloadImageWithUrl:(NSString *)url{

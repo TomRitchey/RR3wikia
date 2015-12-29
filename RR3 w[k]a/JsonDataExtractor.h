@@ -20,10 +20,11 @@
 @property NSMutableArray *tableDataFirstLetters;
 @property NSMutableArray *sectionIndexTitles;
 @property NSMutableArray *urlData;
-@property NSOperationQueue *loadingQueue;
 @property NSString *category;
 @property NSInteger numberOfSections;
 @property NSMutableArray *sectionsCount;
+
+@property NSOperationQueue *loadingDataQueue;
 @property BOOL dataExtracted;
 
 -(void)masterViewControllerRemoved;
@@ -32,6 +33,5 @@
 -(id)initWithCategory:(NSString*)category;
 +(UIImage *)genereteBlankImage;
 +(UIImage *)downloadImageWithUrl:(NSString *)url;
-+(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array inOperationQueue:(NSOperationQueue*)operationQueue;
 -(void)removeObservers;
 @end

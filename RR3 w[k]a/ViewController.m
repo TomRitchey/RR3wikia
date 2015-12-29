@@ -23,17 +23,20 @@
     
 //    NSLog(@"%@",[self class]);
     
-    self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
     self.navigationItem.title  = self.category;
     self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
-    self.loadingDataQueue = [[NSOperationQueue alloc] init];
-
+    //self.loadingDataQueue = [[NSOperationQueue alloc] init];
+    self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
+    
     _thumbnails = [[NSMutableArray alloc]init];
     
     if([self checkIfNetworkAwaliable]){
-        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
-            [charactersExtracted preparation];}];
-        [self.loadingDataQueue addOperation:downloadDataOperation];
+       // __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            [charactersExtracted preparation];
+         });
+        //}];
+       // [self.loadingDataQueue addOperation:downloadDataOperation];
        
     }else{
             [self showErrorMessage];
@@ -63,8 +66,13 @@
        // [self.loadingThumbnailsQueue cancelAllOperations];
     }
     //NSLog(@"bye 0");
-    [self.loadingDataQueue cancelAllOperations];
+    //[self.loadingDataQueue cancelAllOperations];
     [self.loadingThumbnailsQueue cancelAllOperations];
+//    
+//    NSLog(@"canceling operations");
+//    [_loadingThumbnailsQueue waitUntilAllOperationsAreFinished];
+//    [_loadingDataQueue waitUntilAllOperationsAreFinished];
+//    NSLog(@"operations canceled");
     [charactersExtracted masterViewControllerRemoved];
    
 }
@@ -72,16 +80,16 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if([keyPath isEqualToString:@"charactersExtracted.dataExtracted"]&& charactersExtracted.dataExtracted == YES) {
-        //NSLog(@"downloaded");
-        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
-            
+      
+       // __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         self.thumbnails = charactersExtracted.thumbnails;
         [self.tableView reloadData];
         
         for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
-                if([downloadDataOperation isCancelled]){return;}
+                //if([downloadDataOperation isCancelled]){return;}
                 
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
                     // if([downloadImageOperation isCancelled]){return;}
@@ -90,9 +98,9 @@
             }
         }
         [self.tableView reloadData];
-        }];
-        [self.loadingDataQueue addOperation:downloadDataOperation];
-    }
+         });//}];
+       // [self.loadingDataQueue addOperation:downloadDataOperation];
+    }  //NSLog(@"downloaded");
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -178,7 +186,8 @@
 -(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
   
     __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-        if([downloadImageOperation isCancelled]){return;}
+        //NSLog(@"downloading image ");
+        if([downloadImageOperation isCancelled]){NSLog(@"canceled"); return;}
         UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
         //NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
         if([downloadImageOperation isCancelled]){return;}
