@@ -11,8 +11,9 @@
 #import "JsonDataGetter.h"
 #import "WebViewController.h"
 #import "JsonDataExtractor.h"
+#import "ImageBackgroundDownload.h"
 
-@interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, ImageDownloadDelegate>
 {
     JsonDataGetter *characters;
     JsonDataExtractor *charactersExtracted;

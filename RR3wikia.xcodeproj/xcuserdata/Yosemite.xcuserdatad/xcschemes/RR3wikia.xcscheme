@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-               BuildableName = "RR3wikia.app"
-               BlueprintName = "RR3wikia"
+               BuildableName = "RR3w[k]a.app"
+               BlueprintName = "RR3w[k]a"
                ReferencedContainer = "container:RR3wikia.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -53,8 +53,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3wikia.app"
-            BlueprintName = "RR3wikia"
+            BuildableName = "RR3w[k]a.app"
+            BlueprintName = "RR3w[k]a"
             ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -76,8 +76,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3wikia.app"
-            BlueprintName = "RR3wikia"
+            BuildableName = "RR3w[k]a.app"
+            BlueprintName = "RR3w[k]a"
             ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -95,8 +95,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A79F031D1BEE72A0001F0C90"
-            BuildableName = "RR3wikia.app"
-            BlueprintName = "RR3wikia"
+            BuildableName = "RR3w[k]a.app"
+            BlueprintName = "RR3w[k]a"
             ReferencedContainer = "container:RR3wikia.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

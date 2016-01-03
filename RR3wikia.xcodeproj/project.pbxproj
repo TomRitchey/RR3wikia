@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A7176C951C39712600123F65 /* ImageBackgroundDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = A7176C941C39712600123F65 /* ImageBackgroundDownload.m */; };
 		A738F3721C258433009B20F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A738F3711C258433009B20F8 /* Assets.xcassets */; };
 		A740C4461BFFC159000673B4 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A740C4391BFFC159000673B4 /* WebViewController.m */; };
 		A782DD3B1BF5FB21002E34EE /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A782DD3A1BF5FB21002E34EE /* Settings.bundle */; };
@@ -43,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A7176C931C39712600123F65 /* ImageBackgroundDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBackgroundDownload.h; sourceTree = "<group>"; };
+		A7176C941C39712600123F65 /* ImageBackgroundDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBackgroundDownload.m; sourceTree = "<group>"; };
 		A738F3711C258433009B20F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "RR3 w[k]a/Assets.xcassets"; sourceTree = "<group>"; };
 		A740C4381BFFC159000673B4 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		A740C4391BFFC159000673B4 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -51,7 +54,7 @@
 		A79108DB1BEF7A2F00773C0E /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		A79EDE9B1BF89AD500B5B88B /* JsonDataExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonDataExtractor.h; sourceTree = "<group>"; };
 		A79EDE9C1BF89AD500B5B88B /* JsonDataExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonDataExtractor.m; sourceTree = "<group>"; };
-		A79F031E1BEE72A0001F0C90 /* RR3wikia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RR3wikia.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A79F031E1BEE72A0001F0C90 /* RR3w[k]a.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RR3w[k]a.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79F03221BEE72A1001F0C90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A79F03241BEE72A1001F0C90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A79F03251BEE72A1001F0C90 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -103,6 +106,8 @@
 		A79EDE9E1BF89ADF00B5B88B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A7176C931C39712600123F65 /* ImageBackgroundDownload.h */,
+				A7176C941C39712600123F65 /* ImageBackgroundDownload.m */,
 				A79EDE9B1BF89AD500B5B88B /* JsonDataExtractor.h */,
 				A79EDE9C1BF89AD500B5B88B /* JsonDataExtractor.m */,
 				A79F03541BEE72E9001F0C90 /* JsonDataGetter.h */,
@@ -127,7 +132,7 @@
 		A79F031F1BEE72A0001F0C90 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A79F031E1BEE72A0001F0C90 /* RR3wikia.app */,
+				A79F031E1BEE72A0001F0C90 /* RR3w[k]a.app */,
 				A79F03371BEE72A1001F0C90 /* RR3wikiaTests.xctest */,
 				A79F03421BEE72A1001F0C90 /* RR3wikiaUITests.xctest */,
 			);
@@ -196,9 +201,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A79F031D1BEE72A0001F0C90 /* RR3wikia */ = {
+		A79F031D1BEE72A0001F0C90 /* RR3w[k]a */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A79F034B1BEE72A2001F0C90 /* Build configuration list for PBXNativeTarget "RR3wikia" */;
+			buildConfigurationList = A79F034B1BEE72A2001F0C90 /* Build configuration list for PBXNativeTarget "RR3w[k]a" */;
 			buildPhases = (
 				A79F031A1BEE72A0001F0C90 /* Sources */,
 				A79F031B1BEE72A0001F0C90 /* Frameworks */,
@@ -208,9 +213,9 @@
 			);
 			dependencies = (
 			);
-			name = RR3wikia;
+			name = "RR3w[k]a";
 			productName = "RR3 w[k]a";
-			productReference = A79F031E1BEE72A0001F0C90 /* RR3wikia.app */;
+			productReference = A79F031E1BEE72A0001F0C90 /* RR3w[k]a.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A79F03361BEE72A1001F0C90 /* RR3wikiaTests */ = {
@@ -287,7 +292,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A79F031D1BEE72A0001F0C90 /* RR3wikia */,
+				A79F031D1BEE72A0001F0C90 /* RR3w[k]a */,
 				A79F03361BEE72A1001F0C90 /* RR3wikiaTests */,
 				A79F03411BEE72A1001F0C90 /* RR3wikiaUITests */,
 			);
@@ -337,6 +342,7 @@
 				A79F03231BEE72A1001F0C90 /* main.m in Sources */,
 				A7F41DBD1BEF47570021E96D /* JsonDataGetterParent.m in Sources */,
 				A7ABC5C11BEFF51F00EFC623 /* ManufacturersViewController.m in Sources */,
+				A7176C951C39712600123F65 /* ImageBackgroundDownload.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,12 +367,12 @@
 /* Begin PBXTargetDependency section */
 		A79F03391BEE72A1001F0C90 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A79F031D1BEE72A0001F0C90 /* RR3wikia */;
+			target = A79F031D1BEE72A0001F0C90 /* RR3w[k]a */;
 			targetProxy = A79F03381BEE72A1001F0C90 /* PBXContainerItemProxy */;
 		};
 		A79F03441BEE72A1001F0C90 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A79F031D1BEE72A0001F0C90 /* RR3wikia */;
+			target = A79F031D1BEE72A0001F0C90 /* RR3w[k]a */;
 			targetProxy = A79F03431BEE72A1001F0C90 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -555,7 +561,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A79F034B1BEE72A2001F0C90 /* Build configuration list for PBXNativeTarget "RR3wikia" */ = {
+		A79F034B1BEE72A2001F0C90 /* Build configuration list for PBXNativeTarget "RR3w[k]a" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A79F034C1BEE72A2001F0C90 /* Debug */,

@@ -80,25 +80,30 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if([keyPath isEqualToString:@"charactersExtracted.dataExtracted"]&& charactersExtracted.dataExtracted == YES) {
-      
+        //[self.tableView reloadData];
        // __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
          dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         self.thumbnails = charactersExtracted.thumbnails;
-        [self.tableView reloadData];
+        
         
         for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
-                //if([downloadDataOperation isCancelled]){return;}
                 
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
-                    // if([downloadImageOperation isCancelled]){return;}
-                     [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
+                    // [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
+                
+                    ImageBackgroundDownload *custom = [[ImageBackgroundDownload alloc] init];
+                    // assign delegate
+                    custom.delegate = self;
+                    [custom downloadImageWithUrl:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails forQueue:(NSOperationQueue*)self.loadingThumbnailsQueue];
+                  
                 
             }
         }
-        [self.tableView reloadData];
+        
          });//}];
+        [self.tableView reloadData];
        // [self.loadingDataQueue addOperation:downloadDataOperation];
     }  //NSLog(@"downloaded");
 }
@@ -182,6 +187,24 @@
 }
 
 #pragma mark images
+
+-(void)imageDidFinishDownloading{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+    [self.subTableView reloadData];
+    });
+}
+
+-(void)imageDidFinishDownloadingForIndexPath:(NSIndexPath*)indexPath{
+    
+        if ([[self.subTableView indexPathsForVisibleRows] containsObject:indexPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                 withRowAnimation:UITableViewRowAnimationFade];
+        
+        });
+    }
+}
 
 -(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
   
