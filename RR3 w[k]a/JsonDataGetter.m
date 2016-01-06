@@ -64,7 +64,12 @@
     return self;
 }
 -(void)dealloc{
-    [self removeObserver:self forKeyPath:@"self.dataDownloaded"];
+    @try {
+        [self removeObserver:self forKeyPath:@"self.dataDownloaded"];
+    }
+    @catch (NSException *exception) {
+        
+    }
 }
 
 -(void)allocArrays{

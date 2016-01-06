@@ -21,7 +21,7 @@
 
 @interface ImageBackgroundDownload : NSObject
 
-@property (nonatomic, assign) id  delegate;
+@property (atomic, weak) id  delegate;
 
 -(void)downloadImageWithUrl:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array forQueue:(NSOperationQueue*)queue;
 

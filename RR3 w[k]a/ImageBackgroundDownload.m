@@ -22,20 +22,22 @@
     
     __block NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
-            if (operation.isCancelled) {
-                return ;
-            }
+            if (operation.isCancelled) {return ;}
+        
         if(image!=nil){
                 [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
         }
-        if (_delegate == nil) {
-            @try {
+            if (operation.isCancelled) {return ;}
+        
+            if ([_delegate respondsToSelector:@selector(imageDidFinishDownloadingForIndexPath:)]) {
+                
                 [_delegate imageDidFinishDownloadingForIndexPath:indexPath];
-            }
-            @catch (NSException *exception) {
+                
+            }else if ([_delegate respondsToSelector:@selector(imageDidFinishDownloading)]){
+                
                 [_delegate imageDidFinishDownloading];
             }
-        }
+
     }];
     
     [queue addOperation:operation];

@@ -181,8 +181,10 @@
         [self.sectionsCount addObject:[NSNumber numberWithInt:[[self.tableData objectAtIndex:i]count]]];
         //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
     }
-
-    [_delegate didFinishExtracting];
+    //if ([_delegate respondsToSelector:@selector(didFinishExtracting)]) {
+    if (_delegate != nil) {
+        [_delegate didFinishExtracting];
+    }
         //});
    // }];
    // [_loadingQueue addOperation:downloadDataOperation];
