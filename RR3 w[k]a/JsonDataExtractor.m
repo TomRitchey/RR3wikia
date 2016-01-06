@@ -9,13 +9,21 @@
 #import "JsonDataExtractor.h"
 
 @implementation JsonDataExtractor
+-(instancetype)init {
+    
+    self = [super init];
+    
+    return self;
+    
+}
+
 
 -(id)initWithCategory:(NSString*)category{
+    self = [self init];
     if (!(self = [super init]))
     {return nil;}
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.category = category;
-    self.dataExtracted = NO;
     //_loadingQueue = [[NSOperationQueue alloc] init];
     [self addObserver:self forKeyPath:@"self.characters.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
     
@@ -174,7 +182,7 @@
         //NSLog(@"daddsd %lu",(unsigned long)[[self.tableData objectAtIndex:i]count] );
     }
 
-    self.dataExtracted = YES;
+    [_delegate didFinishExtracting];
         //});
    // }];
    // [_loadingQueue addOperation:downloadDataOperation];

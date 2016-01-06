@@ -13,7 +13,7 @@
 #import "JsonDataExtractor.h"
 #import "ImageBackgroundDownload.h"
 
-@interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, ImageDownloadDelegate>
+@interface ViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, ImageDownloadDelegate, JsonDataGetterDelegate>
 {
     JsonDataGetter *characters;
     JsonDataExtractor *charactersExtracted;

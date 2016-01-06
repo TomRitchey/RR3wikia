@@ -10,7 +10,7 @@
 
 @implementation ImageBackgroundDownload
 
--(id)init {
+-(instancetype)init {
     
     self = [super init];
     

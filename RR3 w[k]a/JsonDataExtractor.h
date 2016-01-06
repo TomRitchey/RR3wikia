@@ -10,6 +10,13 @@
 #import <UIKit/UIKit.h>
 #include "JsonDataGetter.h"
 
+@protocol JsonDataGetterDelegate <NSObject>
+
+@required
+-(void)didFinishExtracting;
+
+@end
+
 @interface JsonDataExtractor : NSObject
 
 @property JsonDataGetter *characters;
@@ -25,7 +32,8 @@
 @property NSMutableArray *sectionsCount;
 
 @property NSOperationQueue *loadingDataQueue;
-@property BOOL dataExtracted;
+
+@property (nonatomic, assign) id  delegate;
 
 -(void)masterViewControllerRemoved;
 -(void)downloadAndSortData;

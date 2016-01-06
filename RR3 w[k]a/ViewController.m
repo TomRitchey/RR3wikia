@@ -19,13 +19,10 @@
      //NSLog(@"will load");
     
     charactersExtracted = [[JsonDataExtractor alloc] initWithCategory:self.category];
-    [self addObserver:self forKeyPath:@"charactersExtracted.dataExtracted" options:NSKeyValueObservingOptionOld context:NULL];
-    
-//    NSLog(@"%@",[self class]);
+    charactersExtracted.delegate = self;
     
     self.navigationItem.title  = self.category;
     self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
-    //self.loadingDataQueue = [[NSOperationQueue alloc] init];
     self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
     
     _thumbnails = [[NSMutableArray alloc]init];
@@ -77,12 +74,12 @@
    
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    if([keyPath isEqualToString:@"charactersExtracted.dataExtracted"]&& charactersExtracted.dataExtracted == YES) {
-        //[self.tableView reloadData];
-       // __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
-         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+-(void)didFinishExtracting{
+    [self dataExtractedAction];
+}
+
+-(void)dataExtractedAction{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         self.thumbnails = charactersExtracted.thumbnails;
         
@@ -91,21 +88,16 @@
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
                 
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
-                    // [self downloadImage:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails];
                 
-                    ImageBackgroundDownload *custom = [[ImageBackgroundDownload alloc] init];
-                    // assign delegate
-                    custom.delegate = self;
-                    [custom downloadImageWithUrl:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails forQueue:(NSOperationQueue*)self.loadingThumbnailsQueue];
-                  
-                
+                ImageBackgroundDownload *custom = [[ImageBackgroundDownload alloc] init];
+                // assign delegate
+                custom.delegate = self;
+                [custom downloadImageWithUrl:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails forQueue:(NSOperationQueue*)self.loadingThumbnailsQueue];
             }
         }
         
-         });//}];
-        [self.tableView reloadData];
-       // [self.loadingDataQueue addOperation:downloadDataOperation];
-    }  //NSLog(@"downloaded");
+    });//}];
+    [self.tableView reloadData];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -204,31 +196,6 @@
         
         });
     }
-}
-
--(void)downloadImage:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array{
-  
-    __block NSBlockOperation *downloadImageOperation = [NSBlockOperation blockOperationWithBlock:^{
-        //NSLog(@"downloading image ");
-        if([downloadImageOperation isCancelled]){NSLog(@"canceled"); return;}
-        UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
-        //NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-        if([downloadImageOperation isCancelled]){return;}
-    if(image!=nil && ![downloadImageOperation isCancelled]){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //UIImage* image = [UIImage imageWithData:imageData];
-                if([downloadImageOperation isCancelled]){return;}
-                [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
-                if([downloadImageOperation isCancelled]){return;}
-                [self.subTableView reloadData];
-                if ([[self.subTableView indexPathsForVisibleRows] containsObject:indexPath]) {
-                    [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                             withRowAnimation:UITableViewRowAnimationFade];
-                }
-            });
-        }
-    }];
-    [self.loadingThumbnailsQueue addOperation:downloadImageOperation];
 }
 
 #pragma mark alert messages
