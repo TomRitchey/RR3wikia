@@ -26,23 +26,19 @@
                 return ;
             }
         if(image!=nil){
-                //UIImage* image = [UIImage imageWithData:imageData];
                 [[Array objectAtIndex:indexPath.section]replaceObjectAtIndex:indexPath.row withObject:image];
         }
-    
-    @try {
-        [_delegate imageDidFinishDownloadingForIndexPath:indexPath];
-    }
-    @catch (NSException *exception) {
-        [_delegate imageDidFinishDownloading];
-    }
-    @finally {
-        
-    }
+        if (_delegate == nil) {
+            @try {
+                [_delegate imageDidFinishDownloadingForIndexPath:indexPath];
+            }
+            @catch (NSException *exception) {
+                [_delegate imageDidFinishDownloading];
+            }
+        }
     }];
     
     [queue addOperation:operation];
-    //[_delegate imageDidFinishDownloading];
 }
 
 @end

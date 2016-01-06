@@ -50,26 +50,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    //[charactersExtracted removeObservers];
-    [charactersExtracted masterViewControllerRemoved];
-    @try {
-        [self removeObserver:self forKeyPath:@"charactersExtracted.dataExtracted"];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"no observer");
-    }
-    if (self.isMovingToParentViewController || self.isBeingDismissed) {
-         NSLog(@"bye");
-       // [self.loadingThumbnailsQueue cancelAllOperations];
-    }
-    //NSLog(@"bye 0");
-    //[self.loadingDataQueue cancelAllOperations];
     [self.loadingThumbnailsQueue cancelAllOperations];
-//    
-//    NSLog(@"canceling operations");
-//    [_loadingThumbnailsQueue waitUntilAllOperationsAreFinished];
-//    [_loadingDataQueue waitUntilAllOperationsAreFinished];
-//    NSLog(@"operations canceled");
     [charactersExtracted masterViewControllerRemoved];
    
 }
@@ -79,6 +60,10 @@
 }
 
 -(void)dataExtractedAction{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.subTableView reloadData];
+    });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         self.thumbnails = charactersExtracted.thumbnails;
@@ -96,8 +81,7 @@
             }
         }
         
-    });//}];
-    [self.tableView reloadData];
+    });
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -191,9 +175,14 @@
     
         if ([[self.subTableView indexPathsForVisibleRows] containsObject:indexPath]) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-                                 withRowAnimation:UITableViewRowAnimationFade];
-        
+            @try {
+                [self.subTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+                                         withRowAnimation:UITableViewRowAnimationFade];
+            }
+            @catch (NSException *exception) {
+                [self.subTableView reloadData];
+            }
+
         });
     }
 }
