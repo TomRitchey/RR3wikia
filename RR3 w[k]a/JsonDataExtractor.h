@@ -33,7 +33,7 @@
 
 @property NSOperationQueue *loadingDataQueue;
 
-@property (nonatomic, assign) id  delegate;
+@property (atomic, weak) id  delegate;
 
 -(void)masterViewControllerRemoved;
 -(void)downloadAndSortData;

@@ -49,6 +49,12 @@
 
 
 - (void)viewWillDisappear:(BOOL)animated {
+    //multo importante !!!
+    if (charactersExtracted.delegate == self)
+    {
+        charactersExtracted.delegate = nil;
+    }
+    
     [super viewWillDisappear:animated];
     [self.loadingThumbnailsQueue cancelAllOperations];
     [charactersExtracted masterViewControllerRemoved];
