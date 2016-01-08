@@ -19,6 +19,9 @@
     return self;
 }
 
+-(void)dataDidDownload{
+    [self extractJsonData];
+}
 
 -(void)downloadJsonData{
     //NSLog(@"%@ dasdasd",self.mainURL);
@@ -33,8 +36,12 @@
         }else{
             self.jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         }
-        self.dataDownloaded = YES;
-        //NSLog(@"downloaded");
+        
+        [self extractJsonData];
+        if ([_delegate respondsToSelector:@selector(dataDidDownload)]) {
+            [_delegate dataDidDownload];
+        }
+        
     }] resume];
 }
 

@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol JsonDataGetterDelegate <NSObject>
+
+@required
+
+-(void)dataDidDownload;
+
+@end
+
+
 @interface JsonDataGetterParent : NSObject
 
 
@@ -16,6 +25,7 @@
 @property BOOL dataDownloaded;
 @property NSURL *mainURL;
 @property id jsonData;
+@property (atomic, assign) id  delegate;
 
 -(id)initWithURL:(NSString*)stringURL withLimit:(int)limit;
 -(void)extractJsonData;

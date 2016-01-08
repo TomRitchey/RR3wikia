@@ -64,12 +64,7 @@
     return self;
 }
 -(void)dealloc{
-    @try {
-        [self removeObserver:self forKeyPath:@"self.dataDownloaded"];
-    }
-    @catch (NSException *exception) {
-        
-    }
+
 }
 
 -(void)allocArrays{
@@ -80,16 +75,8 @@
 }
 
 -(void)downloadJsonData{
-     //NSLog(@" self data = %hhd",self.dataDownloaded);
-    [self addObserver:self forKeyPath:@"self.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
-    [super downloadJsonData];
-}
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([keyPath isEqualToString:@"self.dataDownloaded"]&& self.dataDownloaded == YES) {
-        //NSLog(@" self data = %hhd",self.dataDownloaded);
-        [self extractJsonData];
-    }
+    [super downloadJsonData];
 }
 
 -(void)extractJsonData{

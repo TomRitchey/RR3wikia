@@ -10,14 +10,14 @@
 #import <UIKit/UIKit.h>
 #include "JsonDataGetter.h"
 
-@protocol JsonDataGetterDelegate <NSObject>
+@protocol JsonDataExtractorDelegate <NSObject>
 
 @required
 -(void)didFinishExtracting;
 
 @end
 
-@interface JsonDataExtractor : NSObject
+@interface JsonDataExtractor : NSObject <JsonDataGetterDelegate>
 
 @property JsonDataGetter *characters;
 

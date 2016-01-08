@@ -12,7 +12,6 @@
 -(instancetype)init {
     
     self = [super init];
-    
     return self;
     
 }
@@ -22,44 +21,34 @@
     self = [self init];
     if (!(self = [super init]))
     {return nil;}
+    
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     self.category = category;
     //_loadingQueue = [[NSOperationQueue alloc] init];
-    [self addObserver:self forKeyPath:@"self.characters.dataDownloaded" options:NSKeyValueObservingOptionOld context:NULL];
-    
+
     self.loadingDataQueue = [[NSOperationQueue alloc] init];
     return self;
     
 }
 - (void)dealloc{
-    @try{
-        [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
-       // NSLog(@" observer removed ");
-    }@catch(id anException){
-        NSLog(@" no observer ");
+    if (self.characters.delegate == self) {
+        self.characters.delegate = nil;
     }
 }
+
+-(void)dataDidDownload{
+   // NSLog(@"cos");
+    __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
+        
+        [self downloadAndSortData];
+    }];
+    [self.loadingDataQueue addOperation:downloadDataOperation];
+}
+
 -(void)masterViewControllerRemoved{
    // [self.characters dealloc];
     [self.loadingDataQueue cancelAllOperations];
     //NSLog(@"cancelec");
-}
-
--(void)removeObservers{
-    [self removeObserver:self forKeyPath:@"self.characters.dataDownloaded"];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([keyPath isEqualToString:@"self.characters.dataDownloaded"]&& self.characters.dataDownloaded == YES) {
-        //NSLog(@"ex self data = %hhd",self.characters.dataDownloaded);
-        //NSLog(@"Json  is here");
-        
-        __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
-            
-            [self downloadAndSortData];
-            }];
-        [self.loadingDataQueue addOperation:downloadDataOperation];
-    }
 }
 
 -(void)preparation{
@@ -67,6 +56,9 @@
     //self.category = [self replaceCharacters:self.category];
     _thumbnails = [[NSMutableArray alloc]init];
     self.characters = [[JsonDataGetter alloc] initWithCategory:[self replaceCharacters:self.category] withLimit:200];
+    
+    self.characters.delegate = self;
+    
     self.tableDataFirstLetters = [[NSMutableArray alloc] init];
     
     __block NSBlockOperation *downloadDataOperation = [NSBlockOperation blockOperationWithBlock:^{
