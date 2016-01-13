@@ -23,7 +23,7 @@
     
     self.navigationItem.title  = self.category;
     self.loadingThumbnailsQueue = [[NSOperationQueue alloc] init];
-    self.loadingThumbnailsQueue.maxConcurrentOperationCount = 30;
+    self.loadingThumbnailsQueue.maxConcurrentOperationCount = 15;
     
     _thumbnails = [[NSMutableArray alloc]init];
     
@@ -88,7 +88,7 @@
                 
                 NSString *url = [[charactersExtracted.thumbnailsUrls objectAtIndex:i] objectAtIndex:j];
                 
-                ImageBackgroundDownload *custom = [[ImageBackgroundDownload alloc] init];
+                 ImageBackgroundDownload *custom = [[ImageBackgroundDownload alloc] init];
                 // assign delegate
                 custom.delegate = self;
                 [custom downloadImageWithUrl:url forIndexPath:[NSIndexPath indexPathForRow:j inSection:i] inArray:self.thumbnails forQueue:(NSOperationQueue*)self.loadingThumbnailsQueue];

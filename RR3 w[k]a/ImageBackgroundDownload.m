@@ -10,17 +10,17 @@
 
 @implementation ImageBackgroundDownload
 
--(instancetype)init {
-    
-    self = [super init];
-    
-    return self;
-    
-}
+//-(instancetype)init {
+//    
+//    self = [super init];
+//    
+//    return self;
+//    
+//}
 
 -(void)downloadImageWithUrl:(NSString*)url forIndexPath:(NSIndexPath*)indexPath inArray:(NSMutableArray*)Array forQueue:(NSOperationQueue*)queue{
     
-    __block NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
+     __weak NSBlockOperation* operation = [NSBlockOperation blockOperationWithBlock:^{
         UIImage *image = [JsonDataExtractor downloadImageWithUrl:url];
             if (operation.isCancelled) {return ;}
         
