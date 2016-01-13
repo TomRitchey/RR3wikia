@@ -41,12 +41,19 @@
     ///////////    ///////////    ///////////    ///////////
 }
 
+- (void)dealloc{
+    [self.loadingThumbnailsQueue cancelAllOperations];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     NSLog(@"mem warning");
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [self.loadingThumbnailsQueue setSuspended:NO];
+}
 
 - (void)viewWillDisappear:(BOOL)animated {
     //multo importante !!!
@@ -54,9 +61,10 @@
     {
         charactersExtracted.delegate = nil;
     }
-    
+    //NSLog(@"bye from %@",self.category);
     [super viewWillDisappear:animated];
-    [self.loadingThumbnailsQueue cancelAllOperations];
+    //[self.loadingThumbnailsQueue cancelAllOperations];
+    [self.loadingThumbnailsQueue setSuspended:YES];
     [charactersExtracted masterViewControllerRemoved];
    
 }
