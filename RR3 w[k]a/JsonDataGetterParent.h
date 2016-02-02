@@ -25,7 +25,7 @@
 @property BOOL dataDownloaded;
 @property NSURL *mainURL;
 @property id jsonData;
-@property (atomic, assign) id  delegate;
+@property (atomic, weak) id  delegate;
 
 -(id)initWithURL:(NSString*)stringURL withLimit:(int)limit;
 -(void)extractJsonData;

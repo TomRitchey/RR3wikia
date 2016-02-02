@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @import WebKit;
-@interface WebViewController : UIViewController <UIWebViewDelegate,UIScrollViewDelegate>
+@interface WebViewController : UIViewController <UIWebViewDelegate,UIScrollViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 @property (strong, nonatomic) NSString *pageTitle;
 @property (strong, nonatomic) NSString *url;
@@ -17,6 +17,10 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
+
+@property (strong, nonatomic) NSURLConnection *urlConnection;
+@property (strong, nonatomic) NSMutableData *receivedData;
 
 @property BOOL allowLoad;
 @property BOOL allowToolbar;

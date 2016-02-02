@@ -21,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _webView.scrollView.delegate = self;
+  self.webView.scalesPageToFit = YES;
     
     [self.forwardButton setTintColor:[UIColor grayColor]];
     [self.backButton
@@ -32,10 +33,16 @@
     //NSLog(@"%@",self.url);
     NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
 
-    NSURL *url = [NSURL URLWithString:urlWithHeight ];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-   
-    [self.webView loadRequest:requestObj];
+  NSURL *url = [NSURL URLWithString:urlWithHeight ];
+  NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+  
+  _urlConnection = [[NSURLConnection alloc]initWithRequest:requestObj delegate:self];
+  if(_urlConnection) {
+    _receivedData = [[NSMutableData alloc] init];
+  }
+  
+    //[self.webView loadRequest:requestObj];
+  
     
     //[self.scrollview addSubview:self.webView];
     
@@ -69,6 +76,42 @@
             [self.webView stopLoading];
         }
     
+}
+
+- (void)dealloc{
+    //NSLog(@"dealloc");
+    [self.webView loadHTMLString:@"" baseURL:nil];
+    [self.webView stopLoading];
+    [self.webView setDelegate:nil];
+    [self.webView removeFromSuperview];
+    [self setWebView:nil];
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [[NSURLCache sharedURLCache] setDiskCapacity:0];
+    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+}
+
+#pragma mark - NSURLConnectionDataDelegate
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+  [_receivedData setLength:0];
+   NSLog(@" start ");
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+  [_receivedData appendData:data];
+  NSLog(@" checkpoint %@", _receivedData);
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+  NSLog(@"Succeeded! Received %d bytes of data",[_receivedData length]);
+  [_webView loadData:_receivedData MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:nil];
+  _urlConnection = nil;
+  _receivedData = nil;
+}
+
+#pragma mark - NSURLConnectionDelegate
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+  NSLog(@"Connection failure.");
+  _receivedData = nil;
+  _urlConnection = nil;
 }
 
 #pragma mark web wiew (note notworking - no UIWebViewDelegate)

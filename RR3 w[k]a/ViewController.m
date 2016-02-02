@@ -82,7 +82,6 @@
         
         self.thumbnails = charactersExtracted.thumbnails;
         
-        
         for (int i = 0; i < charactersExtracted.numberOfSections; i++) {
             for (int j = 0; j < [[charactersExtracted.sectionsCount objectAtIndex:i]integerValue]; j++) {
                 

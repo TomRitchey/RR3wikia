@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2OV-Fl-foV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2OV-Fl-foV">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -149,17 +149,23 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iJl-8A-BrJ">
+                                <rect key="frame" x="20" y="64" width="560" height="2"/>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="iJl-8A-BrJ" firstAttribute="top" secondItem="NHw-rI-Y1r" secondAttribute="bottom" id="7wp-Pu-5Lt"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OkX-Na-hHY" secondAttribute="trailing" constant="-20" id="Chp-2K-Okh"/>
                             <constraint firstItem="vIk-OU-w5w" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" constant="-20" id="EKH-rZ-lci"/>
+                            <constraint firstItem="iJl-8A-BrJ" firstAttribute="centerX" secondItem="OkX-Na-hHY" secondAttribute="centerX" id="N7m-gu-RXU"/>
                             <constraint firstItem="OkX-Na-hHY" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" constant="-20" id="REp-bX-1zX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="vIk-OU-w5w" secondAttribute="trailing" constant="-20" id="W2a-er-87i"/>
                             <constraint firstItem="u8I-eq-gsf" firstAttribute="top" secondItem="vIk-OU-w5w" secondAttribute="bottom" id="dQz-je-Dv7"/>
                             <constraint firstItem="vIk-OU-w5w" firstAttribute="top" secondItem="ZmZ-mW-krb" secondAttribute="topMargin" id="eUI-mD-eEM"/>
                             <constraint firstItem="u8I-eq-gsf" firstAttribute="top" secondItem="OkX-Na-hHY" secondAttribute="bottom" id="hCQ-KO-aLh"/>
                             <constraint firstItem="OkX-Na-hHY" firstAttribute="top" secondItem="vIk-OU-w5w" secondAttribute="bottom" id="zHz-yP-4nv"/>
+                            <constraint firstItem="iJl-8A-BrJ" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" id="zi5-YW-yUw"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -170,6 +176,7 @@
                     <connections>
                         <outlet property="backButton" destination="DT8-cV-koe" id="mWm-V1-qQu"/>
                         <outlet property="forwardButton" destination="Wwp-tD-GYr" id="OM1-uF-6fe"/>
+                        <outlet property="progressBar" destination="iJl-8A-BrJ" id="pbE-x9-JVg"/>
                         <outlet property="toolbar" destination="OkX-Na-hHY" id="6Sf-eG-n2m"/>
                         <outlet property="webView" destination="vIk-OU-w5w" id="Q6u-np-0Gq"/>
                     </connections>
