@@ -21,6 +21,7 @@
 
 @property (strong, nonatomic) NSURLConnection *urlConnection;
 @property (strong, nonatomic) NSMutableData *receivedData;
+@property long long receivedDataEstimatedSize;
 
 @property BOOL allowLoad;
 @property BOOL allowToolbar;

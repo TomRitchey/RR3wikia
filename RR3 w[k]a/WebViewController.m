@@ -19,22 +19,26 @@
 @implementation WebViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    _webView.scrollView.delegate = self;
+  [super viewDidLoad];
+  _webView.scrollView.delegate = self;
   self.webView.scalesPageToFit = YES;
     
-    [self.forwardButton setTintColor:[UIColor grayColor]];
-    [self.backButton
-     setTintColor:[UIColor grayColor]];
+  [self.forwardButton setTintColor:[UIColor grayColor]];
+  [self.backButton
+  setTintColor:[UIColor grayColor]];
 
-    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
-    self.allowLoad = YES;
-    self.navigationItem.title  = self.pageTitle;
+  _progressBar.progress = 0;
+  
+  self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
+  self.allowLoad = YES;
+  self.navigationItem.title  = self.pageTitle;
     //NSLog(@"%@",self.url);
-    NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+  NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
 
   NSURL *url = [NSURL URLWithString:urlWithHeight ];
-  NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+  NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
+  
+  [requestObj setValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
   
   _urlConnection = [[NSURLConnection alloc]initWithRequest:requestObj delegate:self];
   if(_urlConnection) {
@@ -93,18 +97,22 @@
 #pragma mark - NSURLConnectionDataDelegate
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
   [_receivedData setLength:0];
-   NSLog(@" start ");
+  _receivedDataEstimatedSize = [response expectedContentLength];
+  _progressBar.progress = 0;
+   //NSLog(@" start %lld", _receivedDataEstimatedSize);
 }
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
   [_receivedData appendData:data];
-  NSLog(@" checkpoint %@", _receivedData);
+  //NSLog(@" checkpoint %lu", (unsigned long)_receivedData.length);
+  _progressBar.progress = (float)_receivedData.length/_receivedDataEstimatedSize;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  NSLog(@"Succeeded! Received %d bytes of data",[_receivedData length]);
+  //NSLog(@"Succeeded! Received %d bytes of data",[_receivedData length]);
   [_webView loadData:_receivedData MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:nil];
   _urlConnection = nil;
   _receivedData = nil;
+  _progressBar.progress = 1;
 }
 
 #pragma mark - NSURLConnectionDelegate
@@ -112,6 +120,8 @@
   NSLog(@"Connection failure.");
   _receivedData = nil;
   _urlConnection = nil;
+  
+  _progressBar.progress = 0;
 }
 
 #pragma mark web wiew (note notworking - no UIWebViewDelegate)
