@@ -150,7 +150,7 @@
                                 </items>
                             </toolbar>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iJl-8A-BrJ">
-                                <rect key="frame" x="20" y="64" width="560" height="2"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="2"/>
                             </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -165,7 +165,7 @@
                             <constraint firstItem="vIk-OU-w5w" firstAttribute="top" secondItem="ZmZ-mW-krb" secondAttribute="topMargin" id="eUI-mD-eEM"/>
                             <constraint firstItem="u8I-eq-gsf" firstAttribute="top" secondItem="OkX-Na-hHY" secondAttribute="bottom" id="hCQ-KO-aLh"/>
                             <constraint firstItem="OkX-Na-hHY" firstAttribute="top" secondItem="vIk-OU-w5w" secondAttribute="bottom" id="zHz-yP-4nv"/>
-                            <constraint firstItem="iJl-8A-BrJ" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" id="zi5-YW-yUw"/>
+                            <constraint firstItem="iJl-8A-BrJ" firstAttribute="leading" secondItem="ZmZ-mW-krb" secondAttribute="leadingMargin" constant="-20" id="zi5-YW-yUw"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

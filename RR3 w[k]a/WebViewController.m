@@ -113,6 +113,16 @@
   _urlConnection = nil;
   _receivedData = nil;
   _progressBar.progress = 1;
+//  [UIView animateWithDuration:5 animations:^{
+//    _progressBar.hidden = YES;
+//  }];
+  [UIView transitionWithView:_progressBar
+                    duration:0.8
+                     options:UIViewAnimationOptionTransitionCrossDissolve
+                  animations:NULL
+                  completion:NULL];
+  
+  _progressBar.hidden = YES;
 }
 
 #pragma mark - NSURLConnectionDelegate

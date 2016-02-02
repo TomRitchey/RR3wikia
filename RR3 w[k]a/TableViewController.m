@@ -242,18 +242,18 @@
     
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-    
-    if(translation.y > 0)
-    {
-        NSLog(@"Drag down");
-    } else
-    {
-        NSLog(@"Drag up");
-    }
-}
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+//    
+//    if(translation.y > 0)
+//    {
+//        NSLog(@"Drag down");
+//    } else
+//    {
+//        NSLog(@"Drag up");
+//    }
+//}
 
 
 
