@@ -24,9 +24,8 @@
   self.webView.scalesPageToFit = YES;
     
   [self.forwardButton setTintColor:[UIColor grayColor]];
-  [self.backButton
-  setTintColor:[UIColor grayColor]];
-
+  [self.backButton setTintColor:[UIColor grayColor]];
+  [self.toolbar setHidden:YES];
   _progressBar.progress = 0;
   
   self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
