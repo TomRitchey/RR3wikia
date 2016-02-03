@@ -51,9 +51,16 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
-            ViewController *controller = (ViewController *)segue.destinationViewController;
-            controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
+  
+  ViewController *controller = (ViewController *)segue.destinationViewController;
+  controller.category = [self.categories objectAtIndex:[[self.masterTableView indexPathForSelectedRow] row]];
+  
+  if ([segue.identifier isEqualToString:@"CategoriesSegue"]) {
+    controller.showWebView = NO;
+  } else if ([segue.identifier isEqualToString:@"ItemsFromCategorySegue"]) {
+    controller.showWebView = YES;
+  }
+  
 }
 
 //-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{

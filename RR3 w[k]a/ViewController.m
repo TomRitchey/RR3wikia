@@ -98,13 +98,49 @@
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-        WebViewController *controller = (WebViewController *)segue.destinationViewController;
-        controller.pageTitle = [[charactersExtracted.tableData objectAtIndex:
-                                [[self.subTableView indexPathForSelectedRow] section]]
-    objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+  
+  
+  if (self.showWebView) {
+    
+    WebViewController *controller = (WebViewController *)segue.destinationViewController;
+    controller.pageTitle = [[charactersExtracted.tableData objectAtIndex:
+                             [[self.subTableView indexPathForSelectedRow] section]]
+                            objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
     controller.url = [[charactersExtracted.urlData objectAtIndex:
                        [[self.subTableView indexPathForSelectedRow] section]]
                       objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+  } else {
+    ViewController *controller = (ViewController *)segue.destinationViewController;
+    controller.category = [[charactersExtracted.tableData objectAtIndex:
+                          [[self.subTableView indexPathForSelectedRow] section]]
+                         objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+  
+  }
+
+}
+
+- (void)programaticlyShowView{
+  
+  if (self.showWebView) {
+  
+    WebViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:NULL] instantiateViewControllerWithIdentifier:@"WebView"];
+    controller.pageTitle = [[charactersExtracted.tableData objectAtIndex:
+                           [[self.subTableView indexPathForSelectedRow] section]]objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    controller.url = [[charactersExtracted.urlData objectAtIndex:
+                     [[self.subTableView indexPathForSelectedRow] section]]
+                    objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    [self.navigationController pushViewController:controller animated:YES];
+  } else {
+    ViewController *controller =[[UIStoryboard storyboardWithName:@"Main" bundle:NULL] instantiateViewControllerWithIdentifier:@"ItemsTable"];
+    controller.category = [[charactersExtracted.tableData objectAtIndex:
+                          [[self.subTableView indexPathForSelectedRow] section]]
+                         objectAtIndex:[[self.subTableView indexPathForSelectedRow] row]];
+    //[self presentViewController:controller animated:YES completion:nil];
+    controller.showWebView = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+  }
+  
+
 }
 
 - (bool)checkIfNetworkAwaliable{
@@ -157,8 +193,20 @@
     [imageView setFrame:CGRectMake(0, 0, frame.size.height*0.6, frame.size.height*0.6)];
     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [imageView setTintColor:[UIColor colorWithWhite:0.5 alpha:1]];
-    cell.accessoryView = imageView;
+  
+  
+  if (self.showWebView){
+  cell.accessoryView = imageView;
+  } else {
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  }
+  
+  
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+  [self programaticlyShowView];
 }
 
 #pragma mark tiny alphabet on the right

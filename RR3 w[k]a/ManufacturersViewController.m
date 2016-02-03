@@ -35,7 +35,6 @@
 //
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryView = nil;
-    //[cell.accessoryView
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }

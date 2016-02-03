@@ -29,6 +29,9 @@
 @property (strong, nonatomic) IBOutlet UINavigationItem *navigationItem;
 
 @property (strong, nonatomic) IBOutlet UITableView *subTableView;
+
+@property BOOL showWebView;
+
 @property NSString *category;
 @property NSInteger numberOfSections;
 @property NSMutableArray *sectionsCount;
