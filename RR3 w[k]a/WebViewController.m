@@ -22,7 +22,8 @@
   [super viewDidLoad];
   _webView.scrollView.delegate = self;
   self.webView.scalesPageToFit = YES;
-    
+  self.url = [self replaceCharacters:self.url];
+  
   [self.forwardButton setTintColor:[UIColor grayColor]];
   [self.backButton setTintColor:[UIColor grayColor]];
   [self.toolbar setHidden:YES];
@@ -63,8 +64,7 @@
 //    [webView loadRequest:nsrequest];
 //    [webView setUserInteractionEnabled:NO];
 //    [self.view addSubview:webView];
-    
-    
+  
 }
 
 - (void)didReceiveMemoryWarning {
@@ -258,6 +258,13 @@
 
 -(void)addToAllertController{
     
+}
+
+-(NSString *)replaceCharacters:(NSString *)string{
+  
+  string = [string stringByReplacingOccurrencesOfString:@"%27"
+                                             withString:@"'"];
+  return string;
 }
 /*
 #pragma mark - Navigation
