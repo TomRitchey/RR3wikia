@@ -30,57 +30,20 @@
   _progressBar.progress = 0;
   
   self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
-  self.allowLoad = YES;
+//  self.allowLoad = YES;
   self.navigationItem.title  = self.pageTitle;
-    //NSLog(@"%@",self.url);
-  //NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
-  //[self loadConnectionFromUrlWithString:self.url];
+  [self loadConnectionFromUrlWithString:self.url];
   
-  
-  
-  NSURL *url = [NSURL URLWithString:self.url];
+}
+
+
+- (void)loadConnectionFromUrlWithString:(NSString*)urlString{
+  NSURL *url = [NSURL URLWithString:urlString];
   NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
   
   NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-  //sharedSession
-  NSURLSessionTask* downloadTask = [session downloadTaskWithRequest:requestObj];
-  [downloadTask resume];
-  
-}
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-  [_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
-  _progressBar.progress = 1;
-//  [UIView transitionWithView:_progressBar
-//                    duration:1.2
-//                     options:UIViewAnimationOptionTransitionCrossDissolve
-//                  animations:NULL
-//                  completion:NULL];
-//  
-//  _progressBar.hidden = YES;
-}
-
-- (void)URLSession:(NSURLSession *)session
-      downloadTask:(NSURLSessionDownloadTask *)downloadTask
-      didWriteData:(int64_t)bytesWritten
- totalBytesWritten:(int64_t)totalBytesWritten
-totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
-  _progressBar.progress = totalBytesWritten/totalBytesExpectedToWrite;
-}
-
-- (void)loadConnectionFromUrlWithString:(NSString*)urlString{
-  NSLog(@"loading");
-  
-  NSURL *url = [NSURL URLWithString:urlString ];
-  NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
-  
-  [requestObj setValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
-  
-  _urlConnection = [[NSURLConnection alloc]initWithRequest:requestObj delegate:self];
-  
-  if(_urlConnection) {
-    _receivedData = [[NSMutableData alloc] init];
-  }
+  _downloadTask = [session downloadTaskWithRequest:requestObj];
+  [_downloadTask resume];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,7 +53,6 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
 
 
 - (void)viewWillDisappear:(BOOL)animated {
-    //self.allowLoad = YES;
     if([self.webView isLoading])
         {
             [self.webView stopLoading];
@@ -110,24 +72,9 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
     [[NSURLCache sharedURLCache] setMemoryCapacity:0];
 }
 
-#pragma mark - NSURLConnectionDataDelegate
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-  [_receivedData setLength:0];
-  _receivedDataEstimatedSize = [response expectedContentLength];
-  _progressBar.progress = 0;
-   //NSLog(@" start %lld", _receivedDataEstimatedSize);
-}
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  [_receivedData appendData:data];
-  //NSLog(@" checkpoint %lu", (unsigned long)_receivedData.length);
-  _progressBar.progress = (float)_receivedData.length/_receivedDataEstimatedSize;
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  //NSLog(@"Succeeded! Received %d bytes of data",[_receivedData length]);
-  [_webView loadData:_receivedData MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
-  _urlConnection = nil;
-  _receivedData = nil;
+#pragma mark - NSURLSessionTaskDelegate methods
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
+  [_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   _progressBar.progress = 1;
   [UIView transitionWithView:_progressBar
                     duration:1.2
@@ -138,32 +85,35 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
   _progressBar.hidden = YES;
 }
 
-#pragma mark - NSURLConnectionDelegate
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-  NSLog(@"Connection failure.");
-  _receivedData = nil;
-  _urlConnection = nil;
-  
-  _progressBar.progress = 0;
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+  _progressBar.progress = totalBytesWritten/totalBytesExpectedToWrite;
 }
 
-#pragma mark web wiew (note notworking - no UIWebViewDelegate)
-
+#pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-//NSLog(@" click?? ");
+
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-      NSLog(@" click ");
+      return NO;
+      _progressBar.hidden = NO;
+      [_downloadTask cancel];
       [self loadConnectionFromUrlWithString:[[request URL]absoluteString]];
-      //return NO;
-    }  
-    //return YES;
-    //NSLog(@"%d",self.allowLoad);
+      [self navigationButtonsColors];
+      return NO;
+    }
     [self navigationButtonsColors];
     return YES;
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+  [self navigationButtonsColors];
+}
+
 - (void)webViewDidFinishLoad:(UIWebView*)webView {
-    //self.allowLoad = NO;
+  [self navigationButtonsColors];
 }
 
 #pragma mark handling bottom bar buttons
@@ -279,14 +229,6 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
                                              withString:@"'"];
   return string;
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
