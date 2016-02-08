@@ -36,6 +36,32 @@
   
 }
 
+- (void)didReceiveMemoryWarning {
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+  if([self.webView isLoading])
+  {
+    [self.webView stopLoading];
+  }
+  
+}
+
+- (void)dealloc{
+  //NSLog(@"dealloc");
+  [self.webView loadHTMLString:@"" baseURL:nil];
+  [self.webView stopLoading];
+  [self.webView setDelegate:nil];
+  [self.webView removeFromSuperview];
+  [self setWebView:nil];
+  [[NSURLCache sharedURLCache] removeAllCachedResponses];
+  [[NSURLCache sharedURLCache] setDiskCapacity:0];
+  [[NSURLCache sharedURLCache] setMemoryCapacity:0];
+}
+
 
 - (void)loadConnectionFromUrlWithString:(NSString*)urlString{
   NSURL *url = [NSURL URLWithString:urlString];
@@ -46,35 +72,27 @@
   [_downloadTask resume];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated {
-    if([self.webView isLoading])
-        {
-            [self.webView stopLoading];
-        }
-    
-}
-
-- (void)dealloc{
-    //NSLog(@"dealloc");
-    [self.webView loadHTMLString:@"" baseURL:nil];
-    [self.webView stopLoading];
-    [self.webView setDelegate:nil];
-    [self.webView removeFromSuperview];
-    [self setWebView:nil];
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    [[NSURLCache sharedURLCache] setDiskCapacity:0];
-    [[NSURLCache sharedURLCache] setMemoryCapacity:0];
-}
-
 #pragma mark - NSURLSessionTaskDelegate methods
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-  [_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
+
+  
+  NSString *webData= [NSString stringWithContentsOfURL:location];
+  //NSLog(@"%@",webData);
+  
+  NSError *error = nil;
+  
+  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div.*? class=\"wikia-ad noprint((.*((\n).*?)+))<\/div>" options:NSRegularExpressionCaseInsensitive error:&error];
+  
+  //NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<script(.*((\n).*?)+?)window.adslots2.push(.*((\n).+?)+?)<\/script>" options:NSRegularExpressionCaseInsensitive error:&error];
+  
+  NSString *modifiedString = [regex stringByReplacingMatchesInString:webData options:0 range:NSMakeRange(0, [webData length]) withTemplate:@" "];
+  
+  NSLog(@" html %@", modifiedString);
+//  modifiedString = webData;
+  
+  [_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
+  //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
+  
   _progressBar.progress = 1;
   [UIView transitionWithView:_progressBar
                     duration:1.2
@@ -100,9 +118,9 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
       return NO;
       _progressBar.hidden = NO;
       [_downloadTask cancel];
-      [self loadConnectionFromUrlWithString:[[request URL]absoluteString]];
+      //[self loadConnectionFromUrlWithString:[[request URL]absoluteString]];
       [self navigationButtonsColors];
-      return NO;
+      //return NO;
     }
     [self navigationButtonsColors];
     return YES;
