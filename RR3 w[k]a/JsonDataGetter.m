@@ -22,7 +22,6 @@
     NSString *category = @"Characters";
     NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
     self.mainURL = [NSURL URLWithString:stringURL];
-    self.dataDownloaded = NO;
     return self;
 }
 
@@ -34,8 +33,6 @@
     self.limit = limit;
     NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
     self.mainURL = [NSURL URLWithString:stringURL];
-    
-    self.dataDownloaded = NO;
     return self;
 }
 
@@ -48,9 +45,6 @@
     self.limit = limit;
     NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
     self.mainURL = [NSURL URLWithString:stringURL];
-    
-    //NSLog(@"%@ dasdasd",self.mainURL);
-    self.dataDownloaded = NO;
     return self;
 }
 
@@ -60,7 +54,6 @@
     [self allocArrays];
     self.mainURL = [NSURL URLWithString:stringURL];
     self.limit = 75;
-    self.dataDownloaded = NO;
     return self;
 }
 -(void)dealloc{

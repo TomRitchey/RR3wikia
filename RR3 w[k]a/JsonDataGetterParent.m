@@ -15,7 +15,6 @@
     [self allocArrays];
     self.limit = limit;
     self.mainURL = [NSURL URLWithString:stringURL];
-    self.dataDownloaded = NO;
     return self;
 }
 

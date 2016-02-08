@@ -161,7 +161,7 @@
     self.sectionsCount = [[NSMutableArray alloc]init];
     
     self.sectionIndexTitles = [[NSMutableArray alloc] initWithArray:self.tableDataFirstLetters];
-    NSLog(@"%@",self.category);
+    //NSLog(@"%@",self.category);
     if ([[self.sectionIndexTitles objectAtIndex:0]isEqualToString:self.category]) {
         [self.sectionIndexTitles replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"★"]];
     }

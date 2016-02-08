@@ -33,38 +33,54 @@
   self.allowLoad = YES;
   self.navigationItem.title  = self.pageTitle;
     //NSLog(@"%@",self.url);
-  NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+  //NSMutableString *urlWithHeight = [NSMutableString stringWithFormat:self.url];
+  //[self loadConnectionFromUrlWithString:self.url];
+  
+  
+  
+  NSURL *url = [NSURL URLWithString:self.url];
+  NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
+  
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+  //sharedSession
+  NSURLSessionTask* downloadTask = [session downloadTaskWithRequest:requestObj];
+  [downloadTask resume];
+  
+}
 
-  NSURL *url = [NSURL URLWithString:urlWithHeight ];
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
+  [_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
+  _progressBar.progress = 1;
+//  [UIView transitionWithView:_progressBar
+//                    duration:1.2
+//                     options:UIViewAnimationOptionTransitionCrossDissolve
+//                  animations:NULL
+//                  completion:NULL];
+//  
+//  _progressBar.hidden = YES;
+}
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+  _progressBar.progress = totalBytesWritten/totalBytesExpectedToWrite;
+}
+
+- (void)loadConnectionFromUrlWithString:(NSString*)urlString{
+  NSLog(@"loading");
+  
+  NSURL *url = [NSURL URLWithString:urlString ];
   NSMutableURLRequest *requestObj = [NSMutableURLRequest requestWithURL:url];
   
   [requestObj setValue:@"" forHTTPHeaderField:@"Accept-Encoding"];
   
   _urlConnection = [[NSURLConnection alloc]initWithRequest:requestObj delegate:self];
+  
   if(_urlConnection) {
     _receivedData = [[NSMutableData alloc] init];
   }
-  
-    //[self.webView loadRequest:requestObj];
-  
-    
-    //[self.scrollview addSubview:self.webView];
-    
-    
-//    WKPreferences *thePreferences = [[WKPreferences alloc] init];
-//    thePreferences.javaScriptEnabled = NO;
-//    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
-//    //theConfiguration.preferences = thePreferences;
-//    WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:theConfiguration];
-//   
-//    
-//    //webView.navigationDelegate = self;
-//    NSURL *nsurl = [NSURL URLWithString:self.url ];
-//    NSURLRequest *nsrequest=[NSURLRequest requestWithURL:nsurl];
-//    [webView loadRequest:nsrequest];
-//    [webView setUserInteractionEnabled:NO];
-//    [self.view addSubview:webView];
-  
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,8 +88,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 - (void)viewWillDisappear:(BOOL)animated {
-    self.allowLoad = YES;
+    //self.allowLoad = YES;
     if([self.webView isLoading])
         {
             [self.webView stopLoading];
@@ -108,15 +125,12 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
   //NSLog(@"Succeeded! Received %d bytes of data",[_receivedData length]);
-  [_webView loadData:_receivedData MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:nil];
+  [_webView loadData:_receivedData MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   _urlConnection = nil;
   _receivedData = nil;
   _progressBar.progress = 1;
-//  [UIView animateWithDuration:5 animations:^{
-//    _progressBar.hidden = YES;
-//  }];
   [UIView transitionWithView:_progressBar
-                    duration:0.8
+                    duration:1.2
                      options:UIViewAnimationOptionTransitionCrossDissolve
                   animations:NULL
                   completion:NULL];
@@ -137,20 +151,19 @@
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 //NSLog(@" click?? ");
-    if (navigationType == UIWebViewNavigationTypeOther) {
-        
-        //NSLog(@" click ");
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+      NSLog(@" click ");
+      [self loadConnectionFromUrlWithString:[[request URL]absoluteString]];
+      //return NO;
     }  
     //return YES;
     //NSLog(@"%d",self.allowLoad);
     [self navigationButtonsColors];
-    return self.allowLoad;
+    return YES;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView*)webView {
-    self.allowLoad = NO;
-   // NSLog(@" teraz ");
-    //[self.webView setUserInteractionEnabled:self.allowLoad];
+    //self.allowLoad = NO;
 }
 
 #pragma mark handling bottom bar buttons

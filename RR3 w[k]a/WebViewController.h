@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @import WebKit;
-@interface WebViewController : UIViewController <UIWebViewDelegate,UIScrollViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate>
+@interface WebViewController : UIViewController <UIWebViewDelegate,UIScrollViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate, NSURLSessionTaskDelegate>
 
 @property (strong, nonatomic) NSString *pageTitle;
 @property (strong, nonatomic) NSString *url;
