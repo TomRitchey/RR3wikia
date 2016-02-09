@@ -17,29 +17,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    NSMutableArray *defaultMemory = [[NSMutableArray alloc] initWithArray:[NSMutableArray arrayWithObjects: @"Cars that can be purchased with R$",@"Cars that can be purchased with gold", nil]];
+  NSMutableArray *defaultMemory = [[NSMutableArray alloc] initWithArray:[NSMutableArray arrayWithObjects: @"Cars that can be purchased with R$",@"Cars that can be purchased with gold", nil]];
     //[NSMutableArray arrayWithObjects: @"Cars that can be purchased with R$‏‎", @"Cars that can be purchased with gold‏‎",@"Cars that can be won in special events‏‎", nil]
     //[NSMutableArray arrayWithObjects: @"Cars A-Z", @"0-10 PR Cars", nil]
-    NSDictionary *appDefaults = [NSDictionary
+  NSDictionary *appDefaults = [NSDictionary
                                  dictionaryWithObjectsAndKeys:
                                  defaultMemory, HSMEMORY, nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
   
   NSString *baseURL = [NSString stringWithFormat:@"http://rr3.wikia.com/"];
   
-  //
-//  NSDictionary *baseURLDic = [NSDictionary dictionaryWithObjectsAndKeys:baseURL, @"HSURL", nil];
-//  [[NSUserDefaults standardUserDefaults] registerDefaults:baseURLDic];
   
   [[NSUserDefaults standardUserDefaults] setObject:baseURL forKey:@"baseURL" ];
 
-    NSDictionary *addingEnabled = [NSDictionary dictionaryWithObject:@"NO"
+  NSDictionary *addingEnabled = [NSDictionary dictionaryWithObject:@"NO"
                                                             forKey:@"enabled_adding_list"];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:addingEnabled];
-    NSDictionary *editingEnabled = [NSDictionary dictionaryWithObject:@"NO"
+  [[NSUserDefaults standardUserDefaults] registerDefaults:addingEnabled];
+  NSDictionary *editingEnabled = [NSDictionary dictionaryWithObject:@"NO"
                                                                forKey:@"enabled_deleting_list"];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:editingEnabled];
-   [[NSUserDefaults standardUserDefaults] synchronize];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:editingEnabled];
+  NSDictionary *linksEnabled = [NSDictionary dictionaryWithObject:@"NO"
+                                                             forKey:@"enabled_links"];
+  [[NSUserDefaults standardUserDefaults] registerDefaults:linksEnabled];
+  [[NSUserDefaults standardUserDefaults] synchronize];
     
     return YES;
 }

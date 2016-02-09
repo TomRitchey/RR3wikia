@@ -32,6 +32,22 @@
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
+    <dict>
+      <key>Type</key>
+      <string>PSGroupSpecifier</string>
+      <key>Title</key>
+      <string>Web view</string>
+    </dict>
+    <dict>
+      <key>Type</key>
+      <string>PSToggleSwitchSpecifier</string>
+      <key>Title</key>
+      <string>Enable links in web view</string>
+      <key>Key</key>
+      <string>enabled_links</string>
+      <key>DefaultValue</key>
+      <false/>
+    </dict>
 	</array>
 </dict>
 </plist>

@@ -119,12 +119,20 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-      return NO;
-      _progressBar.hidden = NO;
-      [_downloadTask cancel];
-      //[self loadConnectionFromUrlWithString:[[request URL]absoluteString]];
-      [self navigationButtonsColors];
-      //return NO;
+      if (![request.URL.absoluteString containsString:[[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"]]) {
+        return NO;
+      }
+      
+      if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_links"]){
+         [_downloadTask cancel];
+        _progressBar.hidden = NO;
+        
+        [self loadConnectionFromUrlWithString: request.URL.absoluteString];
+      }else{
+        return NO;
+      }
+      
+      
     }
     [self navigationButtonsColors];
     return YES;
