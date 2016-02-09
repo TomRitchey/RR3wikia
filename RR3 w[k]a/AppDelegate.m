@@ -23,11 +23,16 @@
     NSDictionary *appDefaults = [NSDictionary
                                  dictionaryWithObjectsAndKeys:
                                  defaultMemory, HSMEMORY, nil];
-    
-    
-    
     [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
-    
+  
+  NSString *baseURL = [NSString stringWithFormat:@"http://rr3.wikia.com/"];
+  
+  //
+//  NSDictionary *baseURLDic = [NSDictionary dictionaryWithObjectsAndKeys:baseURL, @"HSURL", nil];
+//  [[NSUserDefaults standardUserDefaults] registerDefaults:baseURLDic];
+  
+  [[NSUserDefaults standardUserDefaults] setObject:baseURL forKey:@"baseURL" ];
+
     NSDictionary *addingEnabled = [NSDictionary dictionaryWithObject:@"NO"
                                                             forKey:@"enabled_adding_list"];
     [[NSUserDefaults standardUserDefaults] registerDefaults:addingEnabled];

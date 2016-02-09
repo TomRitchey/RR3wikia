@@ -46,6 +46,10 @@
   if([self.webView isLoading])
   {
     [self.webView stopLoading];
+    if (self.isMovingFromParentViewController) {
+      [self.webView loadHTMLString: @"" baseURL: nil];
+      [self.webView setDelegate:nil];
+    }
   }
   
 }
@@ -81,16 +85,16 @@
   
   NSError *error = nil;
   
-  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div.*? class=\"wikia-ad noprint((.*((\n).*?)+))<\/div>" options:NSRegularExpressionCaseInsensitive error:&error];
-  
-  //NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<script(.*((\n).*?)+?)window.adslots2.push(.*((\n).+?)+?)<\/script>" options:NSRegularExpressionCaseInsensitive error:&error];
+  NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"window.adslots2.push\(\[(?!\"NATIVE)(.*?)\"\]\)" options:NSRegularExpressionCaseInsensitive error:&error];
   
   NSString *modifiedString = [regex stringByReplacingMatchesInString:webData options:0 range:NSMakeRange(0, [webData length]) withTemplate:@" "];
-  
-  NSLog(@" html %@", modifiedString);
+//  NSLog(@" html %@", modifiedString);
 //  modifiedString = webData;
   
-  [_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
+  
+  NSString *baseURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"];
+  
+  [_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
   //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   
   _progressBar.progress = 1;

@@ -15,14 +15,18 @@
 @implementation JsonDataGetter
 
 -(id)init{
-    if (!(self = [super init]))
+  if (!(self = [super init]))
         return nil;
-    [self allocArrays];
-    self.limit = 75;
-    NSString *category = @"Characters";
-    NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
-    self.mainURL = [NSURL URLWithString:stringURL];
-    return self;
+  [self allocArrays];
+  self.limit = 75;
+  NSString *category = @"Characters";
+  
+  NSString *baseURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"];
+  NSString *URL = [baseURL stringByAppendingString:@"api/v1/Articles/Top?expand=1&category=%@&limit=%i"];
+  
+  NSString *stringURL=[NSString stringWithFormat:URL,category,self.limit];
+  self.mainURL = [NSURL URLWithString:stringURL];
+  return self;
 }
 
 -(id)initWithLimit:(int)limit{
@@ -31,21 +35,26 @@
     [self allocArrays];
     NSString *category = @"Characters";
     self.limit = limit;
-    NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
+    NSString *stringURL=[NSString stringWithFormat:@"api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
     self.mainURL = [NSURL URLWithString:stringURL];
     return self;
 }
 
 -(id)initWithCategory:(NSString*)category withLimit:(int)limit{
 
-    if (!(self = [super init]))
-    {return nil;}
-    [self allocArrays];
+  if (!(self = [super init]))
+  {return nil;}
+  [self allocArrays];
     //NSLog(@"%@",self.category);
-    self.limit = limit;
-    NSString *stringURL=[NSString stringWithFormat:@"http://rr3.wikia.com/api/v1/Articles/Top?expand=1&category=%@&limit=%i",category,self.limit];
-    self.mainURL = [NSURL URLWithString:stringURL];
-    return self;
+  self.limit = limit;
+  
+  NSString *baseURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"];
+  //NSLog(@"base url: %@",baseURL);
+  NSString *URL = [baseURL stringByAppendingString:@"api/v1/Articles/Top?expand=1&category=%@&limit=%i"];
+  
+  NSString *stringURL=[NSString stringWithFormat:URL,category,self.limit];
+  self.mainURL = [NSURL URLWithString:stringURL];
+  return self;
 }
 
 -(id)initWithURL:(NSString*)stringURL{
