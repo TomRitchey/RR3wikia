@@ -60,6 +60,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="qNf-tL-sya">
+                        <barButtonItem key="leftBarButtonItem" image="06_menu_stack-36.png" id="qks-AL-BHY"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0vZ-Mc-xH8">
                             <connections>
                                 <action selector="addButtonPressed:" destination="ruZ-S6-vtk" id="kbl-iW-r1a"/>
@@ -199,6 +200,9 @@
             <point key="canvasLocation" x="-1283" y="591"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="06_menu_stack-36.png" width="18" height="16"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="qLe-wK-0VC"/>
     </inferredMetricsTieBreakers>

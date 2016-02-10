@@ -19,6 +19,11 @@
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong, nonatomic) IBOutlet UIProgressView *progressBar;
 
+@property (atomic) BOOL canGoBack;
+@property (atomic) BOOL canGoForward;
+@property (strong, nonatomic) NSMutableArray *backForwardlist;
+@property (nonatomic) NSUInteger backForwardlistPosition;
+
 @property (strong, nonatomic) NSURLSessionTask* downloadTask;
 
 @property BOOL allowToolbar;

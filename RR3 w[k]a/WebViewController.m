@@ -20,6 +20,12 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  self.canGoForward = NO;
+  self.canGoBack = NO;
+  self.backForwardlist = [[NSMutableArray alloc]initWithObjects:self.url, nil];
+  NSLog(@" list \n %@ ",self.backForwardlist);
+  self.backForwardlistPosition = 0;
+  
   _webView.scrollView.delegate = self;
   self.webView.scalesPageToFit = YES;
   self.url = [self replaceCharacters:self.url];
@@ -126,12 +132,19 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
       if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_links"]){
          [_downloadTask cancel];
         _progressBar.hidden = NO;
+
+        for (NSInteger i = 0; i < self.backForwardlist.count; i++) {
+          if (self.backForwardlistPosition < self.backForwardlist.count-1) {
+            [self.backForwardlist removeObjectAtIndex:i];
+          }
+        }
         
+        [self.backForwardlist addObject:request.URL.absoluteString];
+        self.backForwardlistPosition++;
         [self loadConnectionFromUrlWithString: request.URL.absoluteString];
       }else{
         return NO;
       }
-      
       
     }
     [self navigationButtonsColors];
@@ -146,39 +159,61 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
   [self navigationButtonsColors];
 }
 
+- (void)goBack{
+  if (!self.backForwardlistPosition) {
+    return;
+  }
+  self.backForwardlistPosition--;
+  [self loadConnectionFromUrlWithString:[self.backForwardlist objectAtIndex:self.backForwardlistPosition]];
+}
+
+- (void)goForward{
+  self.backForwardlistPosition++;
+  [self loadConnectionFromUrlWithString:[self.backForwardlist objectAtIndex:self.backForwardlistPosition]];
+}
+
 #pragma mark handling bottom bar buttons
 
 
 - (IBAction)backButtonPressed:(id)sender {
-    if ([self.webView canGoBack]){
-        [self.webView goBack];
+    if ([self canGoBack]){
+        [self goBack];
     }
 }
 - (IBAction)forwardButtonPressed:(id)sender {
-    //NSLog(@"%d",self.webView.canGoForward);
-    if ([self.webView canGoForward]){
-        [self.webView goForward];
+    if ([self canGoForward]){
+        [self goForward];
     }
 }
 
 - (void)navigationButtonsColors{
-    if ([self.webView canGoForward]){
+  if (self.backForwardlistPosition > 0) {
+    self.canGoBack = YES;
+  }else{
+    self.canGoBack = NO;
+  }
+  if (self.backForwardlistPosition < self.backForwardlist.count-1) {
+    self.canGoForward = YES;
+  }else{
+    self.canGoForward = NO;
+  }
+
+    if (self.canGoForward){
         [self.forwardButton setTintColor:self.view.tintColor];
     }else{
         [self.forwardButton setTintColor:[UIColor grayColor]];
     }
-    if ([self.webView canGoBack]){
+    if (self.canGoBack){
         [self.backButton setTintColor:self.view.tintColor];
     }else{
         [self.backButton setTintColor:[UIColor lightGrayColor]];
     }
-    
-    if (![self.webView canGoForward]&&![self.webView canGoBack]) {
-        [self.toolbar setHidden:YES];
-        //[self.navigationController setToolbarHidden:YES animated:YES];
-    }else{
-        //[self.navigationController setToolbarHidden:NO animated:YES];
+  
+  
+    if (self.canGoForward || self.canGoBack) {
         [self.toolbar setHidden:NO];
+    }else{
+        [self.toolbar setHidden:YES];
     }
 }
 
