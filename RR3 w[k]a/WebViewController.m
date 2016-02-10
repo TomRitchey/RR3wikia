@@ -100,7 +100,9 @@
   
   NSString *baseURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"];
   
-  [_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
+  //[_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
+  
+  [_webView loadData:[modifiedString dataUsingEncoding:NSUTF8StringEncoding] MIMEType:@"text/html" textEncodingName:@"@utf-16" baseURL:[NSURL URLWithString:baseURL]];
   //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   
   _progressBar.progress = 1;
