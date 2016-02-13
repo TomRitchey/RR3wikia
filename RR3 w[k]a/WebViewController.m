@@ -23,7 +23,7 @@
   self.canGoForward = NO;
   self.canGoBack = NO;
   self.backForwardlist = [[NSMutableArray alloc]initWithObjects:self.url, nil];
-  NSLog(@" list \n %@ ",self.backForwardlist);
+  //NSLog(@" list \n %@ ",self.backForwardlist);
   self.backForwardlistPosition = 0;
   
   _webView.scrollView.delegate = self;
@@ -102,7 +102,7 @@
   
   //[_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
   
-  [_webView loadData:[modifiedString dataUsingEncoding:NSUTF8StringEncoding] MIMEType:@"text/html" textEncodingName:@"@utf-16" baseURL:[NSURL URLWithString:baseURL]];
+  [_webView loadData:[modifiedString dataUsingEncoding:NSUTF16StringEncoding] MIMEType:@"text/html" textEncodingName:@"@utf-16" baseURL:[NSURL URLWithString:baseURL]];
   //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   
   _progressBar.progress = 1;
@@ -125,7 +125,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
 
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-
+  
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
       if (![request.URL.absoluteString containsString:[[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"]]) {
         return NO;
@@ -134,10 +134,12 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
       if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_links"]){
          [_downloadTask cancel];
         _progressBar.hidden = NO;
-
+        
         for (NSInteger i = 0; i < self.backForwardlist.count; i++) {
-          if (self.backForwardlistPosition < self.backForwardlist.count-1) {
+          
+          if (self.backForwardlistPosition < i) {
             [self.backForwardlist removeObjectAtIndex:i];
+            i--;
           }
         }
         
