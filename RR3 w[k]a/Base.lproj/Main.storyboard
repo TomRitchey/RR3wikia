@@ -60,7 +60,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Categories" id="qNf-tL-sya">
-                        <barButtonItem key="leftBarButtonItem" image="06_menu_stack-36.png" id="qks-AL-BHY"/>
+                        <barButtonItem key="leftBarButtonItem" image="06_menu_stack-36.png" id="qks-AL-BHY">
+                            <connections>
+                                <action selector="hamburgerMenuPressed:" destination="ruZ-S6-vtk" id="Fo2-IG-Qkk"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="0vZ-Mc-xH8">
                             <connections>
                                 <action selector="addButtonPressed:" destination="ruZ-S6-vtk" id="kbl-iW-r1a"/>

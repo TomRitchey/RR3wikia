@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  RR3wikia
+
+  Created by Kacper Augustyniak on 14/02/16.
+  Copyright © 2016 Kacper Augustyniak. All rights reserved.
+*/
+"More" = "Plus";
+"Cancel" = "Annuler";
+"Settings" = "Réglages";
+"Adding is disabled" = "Ajoutant n'est pas activée";
+"Deleting is disabled" = "La suppression n'est pas activée";
+"You can turn on editing in Settings" = "Vous pouvez activer l'édition dans Réglages";

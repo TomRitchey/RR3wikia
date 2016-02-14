@@ -53,8 +53,9 @@
   {
     [self.webView stopLoading];
     if (self.isMovingFromParentViewController) {
-      [self.webView loadHTMLString: @"" baseURL: nil];
-      [self.webView setDelegate:nil];
+//      [self.webView loadHTMLString: @"" baseURL: nil];
+//      [self.webView setDelegate:nil];
+      [self cleanWebView];
     }
   }
   
@@ -62,6 +63,10 @@
 
 - (void)dealloc{
   //NSLog(@"dealloc");
+  [self cleanWebView];
+}
+
+-(void)cleanWebView{
   [self.webView loadHTMLString:@"" baseURL:nil];
   [self.webView stopLoading];
   [self.webView setDelegate:nil];
@@ -71,7 +76,6 @@
   [[NSURLCache sharedURLCache] setDiskCapacity:0];
   [[NSURLCache sharedURLCache] setMemoryCapacity:0];
 }
-
 
 - (void)loadConnectionFromUrlWithString:(NSString*)urlString{
   NSURL *url = [NSURL URLWithString:urlString];
@@ -84,34 +88,23 @@
 
 #pragma mark - NSURLSessionTaskDelegate methods
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
-
-  
-  //NSString *webData= [NSString stringWithContentsOfURL:location];
   
   NSError *error = nil;
-  NSStringEncoding NSUTF8StringEncoding;
-  //NSString *my_string = [[NSString alloc] initWithContentsOfURL:url
-  //                                                     encoding:NSUTF8StringEncoding
-  //                                                        error:&error];
+  NSStringEncoding NSUTF8StringEncoding;        
   NSString *webData = [[NSString alloc] initWithContentsOfURL:location
                                                    usedEncoding:&NSUTF8StringEncoding
                                                           error:&error];
-  //NSLog(@"%@",webData);
-  
+
   NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"window.adslots2.push\(\[(?!\"NATIVE)(.*?)\"\]\)" options:NSRegularExpressionCaseInsensitive error:&error];
   
   NSString *modifiedString = [regex stringByReplacingMatchesInString:webData options:0 range:NSMakeRange(0, [webData length]) withTemplate:@" "];
-//  NSLog(@" html %@", modifiedString);
-//  modifiedString = webData;
-  
   
   NSString *baseURL = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"];
   
   //[_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
   
   [_webView loadData:[modifiedString dataUsingEncoding:NSUTF8StringEncoding] MIMEType:@"text/html" textEncodingName:@"@UTF-8" baseURL:[NSURL URLWithString:baseURL]];
-  //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
-  
+
   _progressBar.progress = 1;
   [UIView transitionWithView:_progressBar
                     duration:1.2
@@ -137,7 +130,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
       if (![request.URL.absoluteString containsString:[[NSUserDefaults standardUserDefaults] objectForKey:@"baseURL"]]) {
         return NO;
       }
-      
+      [self showToolBar];
       if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_links"]){
          [_downloadTask cancel];
         _progressBar.hidden = NO;

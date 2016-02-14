@@ -32,17 +32,7 @@
     [self.noobCategories addObjectsFromArray:memory];
     //NSLog(@"%@ memory",memory);
     [self.categories addObjectsFromArray:self.noobCategories];
-    //NSLog(@"%@",self.categories);
-    
-    
-    
-    //[self addObserver:self forKeyPath:@"self.categories" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -63,30 +53,24 @@
   
 }
 
-//-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-    //NSLog(@"observer");
-//    if ([keyPath isEqualToString:@"self.categories"]) {
-//        self.noobCategories = self.categories;
-//        [self.noobCategories removeObjectsInRange:NSMakeRange(0,self.superCategories.count-1)];
-//            [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
-//
-//    }
-    
-//}
+- (IBAction)hamburgerMenuPressed:(id)sender {
+  [self showActionSheetWithTitle:[NSString stringWithFormat:NSLocalizedString(@"More",nil)] andMessage:@""];
+}
+
 
 - (IBAction)addButtonPressed:(id)sender {
     
     bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_adding_list"];
     
-    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Adding is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"] goToSettings:YES];
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Adding is disabled",nil)] andMessage:[NSString stringWithFormat:NSLocalizedString(@"You can turn on editing in Settings",nil)] goToSettings:YES];
         [self.masterTableView reloadData];
         return;}
     
     
     
     UIAlertController *alertController = [UIAlertController
-                                          alertControllerWithTitle:@"Add new category"
-                                          message:@"Type your new category"
+                                          alertControllerWithTitle:NSLocalizedString(@"Add new category",nil)
+                                          message:NSLocalizedString(@"Type your new category",nil)
                                           preferredStyle:UIAlertControllerStyleAlert];
     
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField)
@@ -145,7 +129,7 @@
         
         cell.textLabel.text = [self.categories objectAtIndex:indexPath.row];
         
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Shows list of subcategories instead of articles"];
+        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Shows list of subcategories instead of articles",nil)];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
     }else{
@@ -182,7 +166,7 @@
     
     bool editionIsAllowed = [[NSUserDefaults standardUserDefaults] boolForKey:@"enabled_deleting_list"];
     
-    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:@"Deleting is disabled"] andMessage:[NSString stringWithFormat:@"You can turn on editing in Settings"] goToSettings:YES];
+    if (!editionIsAllowed) {[self showErrorMessageWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Deleting is disabled",nil)] andMessage:[NSString stringWithFormat:NSLocalizedString(@"You can turn on editing in Settings",nil)] goToSettings:YES];
         [self.masterTableView reloadData];
         return;}
     
@@ -209,24 +193,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:self.noobCategories forKey:HSMEMORY];
 }
 
-
-
-
 #pragma mark error message
-
-- (void)showErrorMessageWithTitle:(NSString*)messageTitle andMessage:(NSString*)message{
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",messageTitle]                                                                   message:[NSString stringWithFormat:@"%@",message]
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* dismissAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Dismiss",nil)]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    
-    [alert addAction:dismissAction];
-    [self presentViewController:alert animated:YES completion:nil];
-    
-    
-}
 
 - (void)showErrorMessageWithTitle:(NSString*)messageTitle andMessage:(NSString*)message goToSettings:(bool)goToSettings{
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",messageTitle]                                                                   message:[NSString stringWithFormat:@"%@",message]
@@ -245,25 +212,28 @@
     }
     [alert addAction:dismissAction];
     [self presentViewController:alert animated:YES completion:nil];
-    
-    
+  
 }
 
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-//{
-//    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
-//    
-//    if(translation.y > 0)
-//    {
-//        NSLog(@"Drag down");
-//    } else
-//    {
-//        NSLog(@"Drag up");
-//    }
-//}
+- (void)showActionSheetWithTitle:(NSString*)messageTitle andMessage:(NSString*)message{
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@",messageTitle]                                                                   message:[NSString stringWithFormat:@"%@",message]
+                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+  
+  UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Cancel",nil)]
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^(UIAlertAction * action) {}];
 
-
-
+    UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Settings",nil)]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                                           }];
+    
+  [alert addAction:settingsAction];
+  [alert addAction:cancelAction];
+  
+  [self presentViewController:alert animated:YES completion:nil];
+  
+}
 
 /*
 // Override to support rearranging the table view.

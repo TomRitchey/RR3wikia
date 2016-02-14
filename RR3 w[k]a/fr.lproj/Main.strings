@@ -1,0 +1,18 @@
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "DT8-cV-koe"; */
+"DT8-cV-koe.title" = "Back";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "MlF-tj-hmY"; */
+"MlF-tj-hmY.text" = "Title";
+
+/* Class = "UIBarButtonItem"; title = "Forward"; ObjectID = "Wwp-tD-GYr"; */
+"Wwp-tD-GYr.title" = "Forward";
+
+/* Class = "UINavigationItem"; title = "Title"; ObjectID = "hxz-40-etK"; */
+"hxz-40-etK.title" = "Title";
+
+/* Class = "UINavigationItem"; title = "Categories"; ObjectID = "qNf-tL-sya"; */
+"qNf-tL-sya.title" = "Categories";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "wGF-3f-X8B"; */
+"wGF-3f-X8B.text" = "Subtitle";
