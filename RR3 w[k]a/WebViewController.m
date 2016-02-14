@@ -151,8 +151,10 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
       }
       
     }
-    [self navigationButtonsColors];
-    return YES;
+  
+  [self updateTitle];
+  [self navigationButtonsColors];
+  return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -176,6 +178,14 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
   [self loadConnectionFromUrlWithString:[self.backForwardlist objectAtIndex:self.backForwardlistPosition]];
 }
 
+- (void)updateTitle{
+  NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+  if (![title isEqualToString:self.navigationItem.title] && ![title isEqualToString:@""]) {
+    //NSLog(@"title %@", title);
+    title = [title stringByReplacingOccurrencesOfString:@" - Real Racing 3 Wiki - Wikia" withString:@""];
+    self.navigationItem.title = title;
+  }
+}
 #pragma mark handling bottom bar buttons
 
 

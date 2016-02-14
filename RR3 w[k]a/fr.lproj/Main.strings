@@ -1,12 +1,12 @@
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "DT8-cV-koe"; */
-"DT8-cV-koe.title" = "Back";
+"DT8-cV-koe.title" = "Revenir";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "MlF-tj-hmY"; */
 "MlF-tj-hmY.text" = "Title";
 
 /* Class = "UIBarButtonItem"; title = "Forward"; ObjectID = "Wwp-tD-GYr"; */
-"Wwp-tD-GYr.title" = "Forward";
+"Wwp-tD-GYr.title" = "Avant";
 
 /* Class = "UINavigationItem"; title = "Title"; ObjectID = "hxz-40-etK"; */
 "hxz-40-etK.title" = "Title";
