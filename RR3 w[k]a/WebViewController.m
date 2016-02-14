@@ -86,10 +86,17 @@
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location{
 
   
-  NSString *webData= [NSString stringWithContentsOfURL:location];
-  //NSLog(@"%@",webData);
+  //NSString *webData= [NSString stringWithContentsOfURL:location];
   
   NSError *error = nil;
+  NSStringEncoding NSUTF8StringEncoding;
+  //NSString *my_string = [[NSString alloc] initWithContentsOfURL:url
+  //                                                     encoding:NSUTF8StringEncoding
+  //                                                        error:&error];
+  NSString *webData = [[NSString alloc] initWithContentsOfURL:location
+                                                   usedEncoding:&NSUTF8StringEncoding
+                                                          error:&error];
+  //NSLog(@"%@",webData);
   
   NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"window.adslots2.push\(\[(?!\"NATIVE)(.*?)\"\]\)" options:NSRegularExpressionCaseInsensitive error:&error];
   
@@ -102,7 +109,7 @@
   
   //[_webView loadHTMLString:modifiedString baseURL:[NSURL URLWithString:baseURL]];
   
-  [_webView loadData:[modifiedString dataUsingEncoding:NSUTF16StringEncoding] MIMEType:@"text/html" textEncodingName:@"@utf-16" baseURL:[NSURL URLWithString:baseURL]];
+  [_webView loadData:[modifiedString dataUsingEncoding:NSUTF8StringEncoding] MIMEType:@"text/html" textEncodingName:@"@UTF-8" baseURL:[NSURL URLWithString:baseURL]];
   //[_webView loadData:[NSData dataWithContentsOfURL:location] MIMEType:@"text/html" textEncodingName:@"@utf-8" baseURL:[NSURL URLWithString:@"http://rr3.wikia.com/"]];
   
   _progressBar.progress = 1;
